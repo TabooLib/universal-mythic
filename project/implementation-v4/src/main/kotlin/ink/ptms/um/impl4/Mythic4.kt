@@ -2,6 +2,10 @@ package ink.ptms.um.impl4
 
 import ink.ptms.um.*
 import io.lumine.xikage.mythicmobs.MythicMobs
+import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter
+import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper
+import io.lumine.xikage.mythicmobs.io.MythicLineConfig
+import io.lumine.xikage.mythicmobs.skills.SkillTrigger
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
@@ -17,14 +21,20 @@ import taboolib.common.platform.Awake
  */
 class Mythic4 : Mythic {
 
+    val api = MythicMobs.inst()
+
     override val isLegacy = true
 
     override fun getItem(name: String): Item? {
-        TODO("Not yet implemented")
+        return Item4(api.itemManager.getItem(name)?.get() ?: return null)
     }
 
     override fun getItemStack(name: String): ItemStack? {
-        TODO("Not yet implemented")
+        return api.itemManager.getItemStack(name)
+    }
+
+    override fun whatMythicItem(itemStack: ItemStack): String? {
+        return api.itemManager.items.firstOrNull { itemStack.isSimilar(it.generateItemStack(itemStack.amount).toBukkit()) }?.internalName
     }
 
     override fun getMob(entity: Entity): Mob? {
@@ -32,15 +42,15 @@ class Mythic4 : Mythic {
     }
 
     override fun getMobType(name: String): MobType? {
-        TODO("Not yet implemented")
+        return MobType4(api.mobManager.getMythicMob(name) ?: return null)
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {
-        TODO("Not yet implemented")
+        return Skill4.Trigger(SkillTrigger.valueOf(name.uppercase()))
     }
 
     override fun getSkillMechanic(skillLine: String): Skill? {
-        TODO("Not yet implemented")
+        return Skill4(MythicMobs.inst().skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine)) ?: return null)
     }
 
     companion object {

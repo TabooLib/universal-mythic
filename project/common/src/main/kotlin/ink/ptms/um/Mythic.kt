@@ -21,6 +21,11 @@ interface Mythic {
     fun getItemStack(name: String): ItemStack?
 
     /**
+     * 获取物品在MM中的ID
+     */
+    fun whatMythicItem(itemStack: ItemStack): String?
+
+    /**
      * 获取 ActiveMob 实例
      */
     fun getMob(entity: Entity): Mob?

@@ -29,4 +29,9 @@ interface Skill {
 
         val name: String
     }
+
+    interface MythicCaster {
+
+        val args: Map<String, Any>
+    }
 }

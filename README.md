@@ -1,19 +1,3 @@
-# Building
+# Universal-Mythic
 
-* [Gradle](https://gradle.org/) - Dependency Management
-
-The GradleWrapper in included in this project.
-
-**Windows:**
-
-```
-gradlew.bat clean build
-```
-
-**macOS/Linux:**
-
-```
-./gradlew clean build
-```
-
-Build artifacts should be found in `./build/libs` folder.
+兼容 4 5 并提供一些简单的工具

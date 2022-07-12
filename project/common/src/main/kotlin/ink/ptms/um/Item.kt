@@ -14,5 +14,5 @@ interface Item {
     /**
      * 生成物品
      */
-    fun generateItemStack(): ItemStack
+    fun generateItemStack(amount: Int): ItemStack
 }
