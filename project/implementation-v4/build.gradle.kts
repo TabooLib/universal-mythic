@@ -6,6 +6,7 @@ plugins {
 
 taboolib {
     install("common")
+    install("platform-bukkit")
     options("skip-minimize", "keep-kotlin-module")
     classifier = null
     version = taboolib_version

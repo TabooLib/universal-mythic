@@ -6,6 +6,8 @@ plugins {
 
 taboolib {
     install("common")
+    install("module-nms-util")
+    install("platform-bukkit")
     options("skip-minimize", "keep-kotlin-module")
     classifier = null
     version = taboolib_version
