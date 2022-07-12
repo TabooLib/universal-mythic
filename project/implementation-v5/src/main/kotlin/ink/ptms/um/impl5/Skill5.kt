@@ -53,7 +53,7 @@ class Skill5(obj: Any) : Skill {
 
         val source = obj as SkillTrigger
 
-        override val name: String = source.name
+        override val name: String = source.getProperty<String>("name")!!
 
     }
 

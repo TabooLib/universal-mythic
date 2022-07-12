@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
+import taboolib.common.reflect.Reflex.Companion.invokeMethod
 import taboolib.module.nms.getItemTag
 
 /**
@@ -46,7 +47,7 @@ class Mythic5 : Mythic {
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {
-        return Skill5.Trigger(SkillTrigger.get(name))
+        return Skill5.Trigger(io.lumine.mythic.api.skills.SkillTrigger::class.java.invokeMethod<Any>("get", name.uppercase(), fixed = true)!!)
     }
 
     override fun getSkillMechanic(skillLine: String): Skill? {
