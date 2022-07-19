@@ -16,14 +16,14 @@ interface Mythic {
     fun getItem(name: String): Item?
 
     /**
+     * 获取 ItemStack 所对应的 MythicItem ID
+     */
+    fun getItemId(itemStack: ItemStack): String?
+
+    /**
      * 获取 MythicItem 实例并构建到 ItemStack
      */
     fun getItemStack(name: String): ItemStack?
-
-    /**
-     * 获取物品在MM中的ID
-     */
-    fun whatMythicItem(itemStack: ItemStack): String?
 
     /**
      * 获取 ActiveMob 实例

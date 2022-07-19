@@ -12,5 +12,4 @@ class MobType5(obj: Any) : MobType {
     override fun spawn(location: Location, level: Double): Mob {
         return Mob5(source.spawn(location.toMythic(), level))
     }
-
 }

@@ -1,6 +1,7 @@
 package ink.ptms.um.impl5
 
 import ink.ptms.um.*
+import io.lumine.mythic.api.MythicPlugin
 import io.lumine.mythic.api.MythicProvider
 import io.lumine.mythic.api.skills.SkillTrigger
 import io.lumine.mythic.core.config.MythicLineConfigImpl
@@ -22,7 +23,7 @@ import taboolib.module.nms.getItemTag
  */
 class Mythic5 : Mythic {
 
-    val api = MythicProvider.get()
+    val api: MythicPlugin = MythicProvider.get()
 
     override val isLegacy = false
 
@@ -30,12 +31,12 @@ class Mythic5 : Mythic {
         return Item5(api.itemManager.getItem(name)?.get() ?: return null)
     }
 
-    override fun getItemStack(name: String): ItemStack? {
-        return api.itemManager?.getItem(name)?.get()?.generateItemStack(1)?.toBukkit()
+    override fun getItemId(itemStack: ItemStack): String? {
+        return itemStack.getItemTag()["MYTHIC_TYPE"]?.asString()
     }
 
-    override fun whatMythicItem(itemStack: ItemStack): String? {
-        return itemStack.getItemTag()["MYTHIC_TYPE"]?.asString()
+    override fun getItemStack(name: String): ItemStack? {
+        return api.itemManager?.getItem(name)?.get()?.generateItemStack(1)?.toBukkit()
     }
 
     override fun getMob(entity: Entity): Mob? {

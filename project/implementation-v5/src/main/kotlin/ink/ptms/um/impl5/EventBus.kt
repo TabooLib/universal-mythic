@@ -13,21 +13,19 @@ object EventBus {
 
     @SubscribeEvent
     fun onMobDeathEvent(event: MythicMobDeathEvent) {
-        val bus = MobDeathEvent(Mob5(event.mob), event.killer, event.drops)
-        bus.call()
+        val bus = MobDeathEvent(Mob5(event.mob), event.killer, event.drops).fire()
         event.drops = bus.drop
     }
 
     @SubscribeEvent
     fun onMobSpawnEvent(event: MythicMobSpawnEvent) {
-        val bus = MobSpawnEvent(Mob5(event.mob), event.mobLevel)
-        bus.call()
+        val bus = MobSpawnEvent(Mob5(event.mob), event.mobLevel).fire()
         event.mobLevel = bus.level
     }
 
     @SubscribeEvent
     fun onMythicReloadEvent(event: MythicReloadedEvent) {
-        MythicReloadEvent(Mythic.API).call()
+        MythicReloadEvent(Mythic.API).fire()
     }
 
 }

@@ -2,11 +2,8 @@ package ink.ptms.um.impl4
 
 import ink.ptms.um.*
 import io.lumine.xikage.mythicmobs.MythicMobs
-import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter
-import io.lumine.xikage.mythicmobs.api.bukkit.BukkitAPIHelper
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
 import io.lumine.xikage.mythicmobs.skills.SkillTrigger
-import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
@@ -21,7 +18,7 @@ import taboolib.common.platform.Awake
  */
 class Mythic4 : Mythic {
 
-    val api = MythicMobs.inst()
+    val api: MythicMobs = MythicMobs.inst()
 
     override val isLegacy = true
 
@@ -29,12 +26,12 @@ class Mythic4 : Mythic {
         return Item4(api.itemManager.getItem(name)?.get() ?: return null)
     }
 
-    override fun getItemStack(name: String): ItemStack? {
-        return api.itemManager.getItemStack(name)
+    override fun getItemId(itemStack: ItemStack): String? {
+        return api.itemManager.items.firstOrNull { itemStack.isSimilar(it.generateItemStack(itemStack.amount).toBukkit()) }?.internalName
     }
 
-    override fun whatMythicItem(itemStack: ItemStack): String? {
-        return api.itemManager.items.firstOrNull { itemStack.isSimilar(it.generateItemStack(itemStack.amount).toBukkit()) }?.internalName
+    override fun getItemStack(name: String): ItemStack? {
+        return api.itemManager.getItemStack(name)
     }
 
     override fun getMob(entity: Entity): Mob? {

@@ -34,7 +34,7 @@ class Mob5(obj: Any) : Mob {
         get() = source.displayName
 
     override val type: MobType
-        get() = TODO("Not yet implemented")
+        get() = MobType5(source.type)
 
     override val entity: Entity
         get() = source.entity.bukkitEntity
