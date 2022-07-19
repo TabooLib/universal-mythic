@@ -16,7 +16,7 @@ tasks {
         exclude("META-INF/maven/**")
         exclude("META-INF/tf/**")
         exclude("module-info.java")
-        exclude("taboolib")
+        relocate("ink.ptms.um.taboolib", "taboolib")
     }
     build {
         dependsOn(shadowJar)
