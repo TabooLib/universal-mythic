@@ -16,6 +16,7 @@ tasks {
         exclude("META-INF/maven/**")
         exclude("META-INF/tf/**")
         exclude("module-info.java")
+        exclude("taboolib")
     }
     build {
         dependsOn(shadowJar)
