@@ -13,9 +13,9 @@ dependencies {
 tasks {
     withType<ShadowJar> {
         archiveClassifier.set("")
-        exclude("META-INF/maven/**")
-        exclude("META-INF/tf/**")
+        exclude("META-INF/**")
         exclude("module-info.java")
+        exclude("plugin.yml")
         relocate("ink.ptms.um.taboolib", "taboolib")
     }
     build {
