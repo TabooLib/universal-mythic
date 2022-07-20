@@ -8,7 +8,7 @@ taboolib {
     install("common")
     install("module-nms-util")
     install("platform-bukkit")
-    options("skip-minimize", "keep-kotlin-module", "skip-kotlin-relocate")
+    options("skip-minimize", "keep-kotlin-module", "skip-kotlin-relocate", "skip-taboolib-relocate")
     classifier = null
     version = taboolib_version
     exclude("taboolib")
