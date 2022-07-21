@@ -1,6 +1,5 @@
 package ink.ptms.um.impl5
 
-import ink.ptms.um.Mythic
 import ink.ptms.um.event.MobDeathEvent
 import ink.ptms.um.event.MobSpawnEvent
 import ink.ptms.um.event.MythicReloadEvent
@@ -25,7 +24,6 @@ object EventBus {
 
     @SubscribeEvent
     fun onMythicReloadEvent(event: MythicReloadedEvent) {
-        MythicReloadEvent(Mythic.API).fire()
+        MythicReloadEvent().fire()
     }
-
 }

@@ -23,7 +23,8 @@ import taboolib.module.nms.getItemTag
  */
 class Mythic5 : Mythic {
 
-    val api: MythicPlugin = MythicProvider.get()
+    val api: MythicPlugin
+        get() = MythicProvider.get()
 
     override val isLegacy = false
 
@@ -57,7 +58,7 @@ class Mythic5 : Mythic {
 
     object Loader {
 
-        @Awake(LifeCycle.LOAD)
+        @Awake(LifeCycle.ENABLE)
         fun setup() {
             if (kotlin.runCatching { Class.forName("io.lumine.mythic.api.MythicProvider") }.getOrNull() != null) {
                 Mythic.API = Mythic5()

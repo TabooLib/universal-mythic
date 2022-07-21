@@ -18,7 +18,8 @@ import taboolib.common.platform.Awake
  */
 class Mythic4 : Mythic {
 
-    val api: MythicMobs = MythicMobs.inst()
+    val api: MythicMobs
+        get() = MythicMobs.inst()
 
     override val isLegacy = true
 
@@ -52,7 +53,7 @@ class Mythic4 : Mythic {
 
     object Loader {
 
-        @Awake(LifeCycle.LOAD)
+        @Awake(LifeCycle.ENABLE)
         fun setup() {
             if (kotlin.runCatching { Class.forName("io.lumine.xikage.mythicmobs.MythicMobs") }.getOrNull() != null) {
                 Mythic.API = Mythic4()
