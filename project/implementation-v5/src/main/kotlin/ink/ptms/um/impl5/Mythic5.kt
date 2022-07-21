@@ -55,7 +55,7 @@ class Mythic5 : Mythic {
         return Skill5(api.skillManager.getMechanic(MythicLineConfigImpl.unparseBlock(skillLine)) ?: return null)
     }
 
-    companion object {
+    object Loader {
 
         @Awake(LifeCycle.LOAD)
         fun setup() {

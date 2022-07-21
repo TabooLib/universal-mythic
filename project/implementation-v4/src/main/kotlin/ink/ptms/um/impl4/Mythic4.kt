@@ -50,7 +50,7 @@ class Mythic4 : Mythic {
         return Skill4(MythicMobs.inst().skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine)) ?: return null)
     }
 
-    companion object {
+    object Loader {
 
         @Awake(LifeCycle.LOAD)
         fun setup() {

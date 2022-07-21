@@ -49,5 +49,9 @@ interface Mythic {
 
         @JvmStatic
         lateinit var API: Mythic
+
+        fun isLoaded(): Boolean {
+            return ::API.isInitialized
+        }
     }
 }
