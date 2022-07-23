@@ -23,8 +23,8 @@ class Mob4(obj: Any) : Mob {
 
     val root by lazy {
         val yaml = YamlConfiguration()
-        yaml.loadFromString(source.type.config.getProperty<Any>("fc")!!.invokeMethod("saveToString")!!)
-        yaml
+        yaml.load(source.type.config.file)
+        yaml.getConfigurationSection(source.type.internalName)!!
     }
 
     override val id: String
