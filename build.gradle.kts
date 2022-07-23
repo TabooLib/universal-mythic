@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("org.gradle.java")
     id("org.gradle.maven-publish")
@@ -13,6 +15,12 @@ subprojects {
     }
     dependencies {
         "compileOnly"(kotlin("stdlib"))
+    }
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            freeCompilerArgs = listOf("-Xjvm-default=all")
+        }
     }
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
