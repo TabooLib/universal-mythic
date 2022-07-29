@@ -40,6 +40,14 @@ class Mythic5 : Mythic {
         return api.itemManager?.getItem(name)?.get()?.generateItemStack(1)?.toBukkit()
     }
 
+    override fun getItemIDList(): List<String> {
+        return api.itemManager.items.map { it.internalName }
+    }
+
+    override fun getItemList(): List<Item> {
+        return api.itemManager.items.map { Item5(it) }
+    }
+
     override fun getMob(entity: Entity): Mob? {
         return Mob5((MythicProvider.get().mobManager as MobExecutor).getMythicMobInstance(entity) ?: return null)
     }

@@ -28,11 +28,23 @@ class Mythic4 : Mythic {
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
-        return api.itemManager.items.firstOrNull { itemStack.isSimilar(it.generateItemStack(itemStack.amount).toBukkit()) }?.internalName
+        return api.itemManager.items.firstOrNull {
+            itemStack.isSimilar(
+                it.generateItemStack(itemStack.amount).toBukkit()
+            )
+        }?.internalName
     }
 
     override fun getItemStack(name: String): ItemStack? {
         return api.itemManager.getItemStack(name)
+    }
+
+    override fun getItemIDList(): List<String> {
+        return api.itemManager.items.map { it.internalName }
+    }
+
+    override fun getItemList(): List<Item> {
+        return api.itemManager.items.map { Item4(it) }
     }
 
     override fun getMob(entity: Entity): Mob? {
@@ -48,7 +60,9 @@ class Mythic4 : Mythic {
     }
 
     override fun getSkillMechanic(skillLine: String): Skill? {
-        return Skill4(MythicMobs.inst().skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine)) ?: return null)
+        return Skill4(
+            MythicMobs.inst().skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine)) ?: return null
+        )
     }
 
     object Loader {

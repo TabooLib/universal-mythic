@@ -26,6 +26,16 @@ interface Mythic {
     fun getItemStack(name: String): ItemStack?
 
     /**
+     * 获取 MythicItem ID 列表
+     */
+    fun getItemIDList(): List<String>
+
+    /**
+     * 获取 MythicItem列表
+     */
+    fun getItemList(): List<Item>
+
+    /**
      * 获取 ActiveMob 实例
      */
     fun getMob(entity: Entity): Mob?
