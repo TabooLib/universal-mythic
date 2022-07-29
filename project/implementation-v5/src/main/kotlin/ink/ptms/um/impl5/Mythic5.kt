@@ -52,6 +52,10 @@ class Mythic5 : Mythic {
         return Mob5((MythicProvider.get().mobManager as MobExecutor).getMythicMobInstance(entity) ?: return null)
     }
 
+    override fun getMobIDList(): List<String> {
+        return api.mobManager.mobNames.toList()
+    }
+
     override fun getMobType(name: String): MobType? {
         return MobType5(api.mobManager.getMythicMob(name)?.get() ?: return null)
     }

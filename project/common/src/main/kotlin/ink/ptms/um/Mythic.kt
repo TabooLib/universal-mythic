@@ -41,6 +41,11 @@ interface Mythic {
     fun getMob(entity: Entity): Mob?
 
     /**
+     * 获取所有 Mob ID 列表
+     */
+    fun getMobIDList(): List<String>
+
+    /**
      * 获取 MythicMob 实例
      */
     fun getMobType(name: String): MobType?
