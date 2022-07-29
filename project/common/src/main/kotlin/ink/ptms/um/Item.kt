@@ -1,5 +1,6 @@
 package ink.ptms.um
 
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
 
 /**
@@ -15,4 +16,10 @@ interface Item {
      * 生成物品
      */
     fun generateItemStack(amount: Int): ItemStack
+
+    /**
+     * 物品的配置文件
+     */
+    fun getConfig(): ConfigurationSection
+
 }
