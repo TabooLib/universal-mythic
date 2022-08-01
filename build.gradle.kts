@@ -41,9 +41,11 @@ publishing {
         }
     }
     publications {
-        create<MavenPublication>("library") {
-            from(components["java"])
-            groupId = project.group.toString()
+        create<MavenPublication>("maven") {
+            artifactId = "um"
+            groupId = "ink.ptms"
+            version = project.version.toString()
+            artifact(File("plugin/build/libs/plugin-${project.version}.jar"))
         }
     }
 }
