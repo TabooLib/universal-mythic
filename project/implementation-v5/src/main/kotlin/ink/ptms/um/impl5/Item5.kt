@@ -16,6 +16,14 @@ class Item5(obj: Any) : Item {
         yaml.getConfigurationSection(source.internalName)!!
     }
 
+    override val internalName: String
+        get() = source.internalName
+
+    override val amount: Int
+        get() = source.amount
+
+    override val displayName: String
+        get() = source.displayName
 
     override fun getConfig(): ConfigurationSection {
         return root

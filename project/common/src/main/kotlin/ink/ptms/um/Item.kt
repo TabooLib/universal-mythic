@@ -13,6 +13,21 @@ import org.bukkit.inventory.ItemStack
 interface Item {
 
     /**
+     * 物品ID
+     */
+    val internalName: String
+
+    /**
+     * 物品数量
+     */
+    val amount: Int
+
+    /**
+     * 物品名
+     */
+    val displayName: String
+
+    /**
      * 生成物品
      */
     fun generateItemStack(amount: Int): ItemStack
