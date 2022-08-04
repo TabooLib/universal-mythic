@@ -5,5 +5,5 @@
 使用方式:
 
 ```kotlin
-taboo("ink.ptms:um:1.0.0-beta-12")
+taboo("ink.ptms:um:1.0.0-beta-14")
 ```
