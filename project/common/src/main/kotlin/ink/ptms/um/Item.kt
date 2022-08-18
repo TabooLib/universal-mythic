@@ -25,7 +25,7 @@ interface Item {
     /**
      * 物品名
      */
-    val displayName: String
+    val displayName: String?
 
     /**
      * 生成物品

@@ -22,8 +22,8 @@ class Item4(obj: Any) : Item {
     override val amount: Int
         get() = source.amount
 
-    override val displayName: String
-        get() = source.displayName ?: internalName
+    override val displayName: String?
+        get() = source.displayName
 
     override fun getConfig(): ConfigurationSection {
         return root
