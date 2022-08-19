@@ -4,14 +4,14 @@ import ink.ptms.um.*
 import io.lumine.xikage.mythicmobs.MythicMobs
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
 import io.lumine.xikage.mythicmobs.skills.SkillTrigger
+import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 
 /**
- * universal-mythic
- * ink.ptms.um.impl4.Mythic4
+ * universal-mythic ink.ptms.um.impl4.Mythic4
  *
  * @author 坏黑
  * @since 2022/7/12 13:47
@@ -67,6 +67,18 @@ class Mythic4 : Mythic {
         return Skill4(
             MythicMobs.inst().skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine)) ?: return null
         )
+    }
+
+    override fun castSkill(
+        caster: Entity,
+        skillName: String,
+        trigger: Entity?,
+        origin: Location,
+        eTargets: Collection<Entity>,
+        lTargets: Collection<Location>,
+        power: Float,
+    ): Boolean {
+        return MythicMobs.inst().apiHelper.castSkill(caster, skillName, trigger, origin, eTargets, lTargets, power)
     }
 
     object Loader {
