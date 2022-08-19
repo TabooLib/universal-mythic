@@ -1,12 +1,11 @@
 package ink.ptms.um.impl5
 
 import ink.ptms.um.*
-import io.lumine.mythic.api.MythicPlugin
 import io.lumine.mythic.api.MythicProvider
-import io.lumine.mythic.api.skills.SkillTrigger
+import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.core.config.MythicLineConfigImpl
 import io.lumine.mythic.core.mobs.MobExecutor
-import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
@@ -15,16 +14,15 @@ import taboolib.common.reflect.Reflex.Companion.invokeMethod
 import taboolib.module.nms.getItemTag
 
 /**
- * universal-mythic
- * ink.ptms.um.impl4.Mythic4
+ * universal-mythic ink.ptms.um.impl4.Mythic4
  *
  * @author 坏黑
  * @since 2022/7/12 13:47
  */
 class Mythic5 : Mythic {
 
-    val api: MythicPlugin
-        get() = MythicProvider.get()
+    val api: MythicBukkit
+        get() = MythicProvider.get() as MythicBukkit
 
     override val isLegacy = false
 
@@ -61,11 +59,29 @@ class Mythic5 : Mythic {
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {
-        return Skill5.Trigger(io.lumine.mythic.api.skills.SkillTrigger::class.java.invokeMethod<Any>("get", name.uppercase(), fixed = true)!!)
+        return Skill5.Trigger(
+            io.lumine.mythic.api.skills.SkillTrigger::class.java.invokeMethod<Any>(
+                "get",
+                name.uppercase(),
+                fixed = true
+            )!!
+        )
     }
 
     override fun getSkillMechanic(skillLine: String): Skill? {
         return Skill5(api.skillManager.getMechanic(MythicLineConfigImpl.unparseBlock(skillLine)) ?: return null)
+    }
+
+    override fun castSkill(
+        caster: Entity,
+        skillName: String,
+        trigger: Entity?,
+        origin: Location,
+        eTargets: Collection<Entity>,
+        lTargets: Collection<Location>,
+        power: Float,
+    ): Boolean {
+        return api.apiHelper.castSkill(caster, skillName, trigger, origin, eTargets, lTargets, power)
     }
 
     object Loader {
