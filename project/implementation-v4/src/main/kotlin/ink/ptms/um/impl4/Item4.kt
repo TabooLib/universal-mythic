@@ -11,9 +11,11 @@ class Item4(obj: Any) : Item {
     val source = obj as MythicItem
 
     val root by lazy {
-        val yaml = YamlConfiguration()
-        yaml.load(source.config.file)
-        yaml.getConfigurationSection(source.internalName)!!
+        val config = source.config.fileConfiguration as YamlConfiguration
+        val clazz = config.javaClass
+        val yamlField = clazz.getDeclaredField("yaml")
+        yamlField.isAccessible = true
+        yamlField.get(config) as YamlConfiguration
     }
 
     override val internalName: String
