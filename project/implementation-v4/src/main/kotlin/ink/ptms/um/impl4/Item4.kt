@@ -2,8 +2,8 @@ package ink.ptms.um.impl4
 
 import ink.ptms.um.Item
 import io.lumine.xikage.mythicmobs.items.MythicItem
+import io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration
 import org.bukkit.configuration.ConfigurationSection
-import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.inventory.ItemStack
 
 class Item4(obj: Any) : Item {
@@ -15,7 +15,7 @@ class Item4(obj: Any) : Item {
         val clazz = config.javaClass
         val yamlField = clazz.getDeclaredField("yaml")
         yamlField.isAccessible = true
-        yamlField.get(config) as YamlConfiguration
+        yamlField.get(config) as org.bukkit.configuration.file.YamlConfiguration
     }
 
     override val internalName: String
