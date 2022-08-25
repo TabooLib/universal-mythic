@@ -1,7 +1,7 @@
 package ink.ptms.um
 
-import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
+import org.yaml.snakeyaml.Yaml
 
 /**
  * universal-mythic
@@ -35,6 +35,6 @@ interface Item {
     /**
      * 物品的配置文件
      */
-    fun getConfig(): ConfigurationSection
+    fun getConfig(): Yaml
 
 }

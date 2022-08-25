@@ -3,12 +3,9 @@ package ink.ptms.um.impl4
 import ink.ptms.um.Mob
 import ink.ptms.um.MobType
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob
-import org.bukkit.configuration.ConfigurationSection
-import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
-import taboolib.common.reflect.Reflex.Companion.getProperty
-import taboolib.common.reflect.Reflex.Companion.invokeMethod
+import org.yaml.snakeyaml.Yaml
 
 /**
  * universal-mythic
@@ -22,9 +19,12 @@ class Mob4(obj: Any) : Mob {
     val source = obj as ActiveMob
 
     val root by lazy {
-        val yaml = YamlConfiguration()
-        yaml.load(source.type.config.file)
-        yaml.getConfigurationSection(source.type.internalName)!!
+        val config =
+            source.type.config.fileConfiguration as io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration
+        val clazz = config.javaClass
+        val yamlField = clazz.getDeclaredField("yaml")
+        yamlField.isAccessible = true
+        yamlField.get(config) as Yaml
     }
 
     override val id: String
@@ -51,6 +51,6 @@ class Mob4(obj: Any) : Mob {
     override val faction: String
         get() = source.faction
 
-    override val config: ConfigurationSection
+    override val config: Yaml
         get() = root
 }

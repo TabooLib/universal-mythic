@@ -5,6 +5,7 @@ import io.lumine.xikage.mythicmobs.items.MythicItem
 import io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
+import org.yaml.snakeyaml.Yaml
 
 class Item4(obj: Any) : Item {
 
@@ -15,7 +16,7 @@ class Item4(obj: Any) : Item {
         val clazz = config.javaClass
         val yamlField = clazz.getDeclaredField("yaml")
         yamlField.isAccessible = true
-        yamlField.get(config) as org.bukkit.configuration.file.YamlConfiguration
+        yamlField.get(config) as Yaml
     }
 
     override val internalName: String
@@ -27,7 +28,7 @@ class Item4(obj: Any) : Item {
     override val displayName: String?
         get() = source.displayName
 
-    override fun getConfig(): ConfigurationSection {
+    override fun getConfig(): Yaml {
         return root
     }
 

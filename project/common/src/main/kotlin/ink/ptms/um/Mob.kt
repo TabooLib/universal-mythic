@@ -3,6 +3,7 @@ package ink.ptms.um
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
+import org.yaml.snakeyaml.Yaml
 
 /**
  * universal-mythic
@@ -56,5 +57,5 @@ interface Mob {
     /**
      * 配置
      */
-    val config: ConfigurationSection
+    val config: Yaml
 }
