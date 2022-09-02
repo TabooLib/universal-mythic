@@ -11,7 +11,6 @@ import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
-import taboolib.common.reflect.Reflex.Companion.invokeMethod
 import taboolib.module.nms.getItemTag
 
 /**

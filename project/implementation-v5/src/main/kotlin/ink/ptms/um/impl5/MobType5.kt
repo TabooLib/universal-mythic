@@ -4,7 +4,6 @@ import ink.ptms.um.Mob
 import ink.ptms.um.MobType
 import io.lumine.mythic.api.mobs.MythicMob
 import org.bukkit.Location
-import org.bukkit.entity.EntityType
 import taboolib.library.configuration.ConfigurationSection
 
 class MobType5(val source: MythicMob) : MobType {

@@ -1,8 +1,6 @@
 package ink.ptms.um
 
 import org.bukkit.Location
-import org.bukkit.entity.Entity
-import org.bukkit.entity.EntityType
 import taboolib.library.configuration.ConfigurationSection
 
 /**

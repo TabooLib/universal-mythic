@@ -2,10 +2,7 @@ package ink.ptms.um.impl4
 
 import ink.ptms.um.Item
 import io.lumine.xikage.mythicmobs.items.MythicItem
-import io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration
-import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
-import org.yaml.snakeyaml.Yaml
 
 class Item4(val source: MythicItem) : Item {
 

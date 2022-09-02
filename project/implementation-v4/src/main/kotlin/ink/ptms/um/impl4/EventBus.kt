@@ -1,6 +1,5 @@
 package ink.ptms.um.impl4
 
-import ink.ptms.um.Mythic
 import ink.ptms.um.event.MobDeathEvent
 import ink.ptms.um.event.MobSpawnEvent
 import ink.ptms.um.event.MythicReloadEvent

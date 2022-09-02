@@ -1,9 +1,7 @@
 package ink.ptms.um
 
 import org.bukkit.inventory.ItemStack
-import org.yaml.snakeyaml.Yaml
 import taboolib.library.configuration.ConfigurationSection
-import taboolib.module.configuration.Configuration
 
 /**
  * universal-mythic
