@@ -29,7 +29,7 @@ object EventBus {
             val mob = MythicMobs.inst().mobManager.getMythicMobInstance(event.entity)
             MobSpawnEvent(if (mob != null) Mob4(mob) else null, MobType4(event.mobType), event.mobLevel).fire()
         }
-        event.mobLevel = bus.level
+        kotlin.runCatching { event.mobLevel = bus.level }
     }
 
     @Ghost
