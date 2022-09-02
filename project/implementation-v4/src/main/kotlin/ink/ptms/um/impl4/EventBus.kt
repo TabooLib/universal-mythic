@@ -22,13 +22,10 @@ object EventBus {
     @Ghost
     @SubscribeEvent
     fun onMobSpawnEvent(event: MythicMobSpawnEvent) {
-        val bus = try {
-            MobSpawnEvent(Mob4(event.mob), MobType4(event.mobType), event.mobLevel).fire()
-        } catch (ex: NoSuchMethodError) {
-            // 在较低的 MythicMobs 版本下无法在 MythicMobSpawnEvent 中获取 mob 参数
-            val mob = MythicMobs.inst().mobManager.getMythicMobInstance(event.entity)
-            MobSpawnEvent(if (mob != null) Mob4(mob) else null, MobType4(event.mobType), event.mobLevel).fire()
-        }
+        // 在较低的 MythicMobs 版本下无法在 MythicMobSpawnEvent 中获取 mob 参数
+        val mob = kotlin.runCatching { Mob4(event.mob) }.getOrElse { MythicMobs.inst().mobManager.getMythicMobInstance(event.entity)?.let { Mob4(it) } }
+        val level = kotlin.runCatching { event.mobLevel }.getOrElse { 0.0 }
+        val bus = MobSpawnEvent(mob, MobType4(event.mobType), level).fire()
         kotlin.runCatching { event.mobLevel = bus.level }
     }
 
