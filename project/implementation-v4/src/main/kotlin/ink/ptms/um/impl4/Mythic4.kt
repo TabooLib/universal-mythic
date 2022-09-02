@@ -28,11 +28,7 @@ class Mythic4 : Mythic {
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
-        return api.itemManager.items.firstOrNull {
-            itemStack.isSimilar(
-                it.generateItemStack(itemStack.amount).toBukkit()
-            )
-        }?.internalName
+        return api.itemManager.items.firstOrNull { itemStack.isSimilar(it.generateItemStack(itemStack.amount).toBukkit()) }?.internalName
     }
 
     override fun getItemStack(name: String): ItemStack? {
@@ -63,10 +59,12 @@ class Mythic4 : Mythic {
         return Skill4.Trigger(SkillTrigger.valueOf(name.uppercase()))
     }
 
+    override fun getDefaultSkillTrigger(): Skill.Trigger {
+        return Skill4.Trigger(SkillTrigger.DEFAULT)
+    }
+
     override fun getSkillMechanic(skillLine: String): Skill? {
-        return Skill4(
-            MythicMobs.inst().skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine)) ?: return null
-        )
+        return Skill4(MythicMobs.inst().skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine)) ?: return null)
     }
 
     override fun castSkill(

@@ -5,7 +5,7 @@ import ink.ptms.um.MobType
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
-import org.yaml.snakeyaml.Yaml
+import taboolib.library.configuration.ConfigurationSection
 
 /**
  * universal-mythic
@@ -14,18 +14,7 @@ import org.yaml.snakeyaml.Yaml
  * @author 坏黑
  * @since 2022/7/12 13:51
  */
-class Mob4(obj: Any) : Mob {
-
-    val source = obj as ActiveMob
-
-    val root by lazy {
-        val config =
-            source.type.config.fileConfiguration as io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration
-        val clazz = config.javaClass
-        val yamlField = clazz.getDeclaredField("yaml")
-        yamlField.isAccessible = true
-        yamlField.get(config) as Yaml
-    }
+class Mob4(val source: ActiveMob) : Mob {
 
     override val id: String
         get() = source.type.internalName
@@ -51,6 +40,6 @@ class Mob4(obj: Any) : Mob {
     override val faction: String
         get() = source.faction
 
-    override val config: Yaml
-        get() = root
+    override val config: ConfigurationSection
+        get() = Mob4Configuration(source.type.config)
 }

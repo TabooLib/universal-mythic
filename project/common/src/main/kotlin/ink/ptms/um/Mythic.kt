@@ -36,6 +36,11 @@ interface Mythic {
     /** 获取技能类型 */
     fun getSkillTrigger(name: String): Skill.Trigger
 
+    /**
+     * 获取默认技能类型
+     */
+    fun getDefaultSkillTrigger(): Skill.Trigger
+
     /** 将字符串转换为技能实例 */
     fun getSkillMechanic(skillLine: String): Skill?
 

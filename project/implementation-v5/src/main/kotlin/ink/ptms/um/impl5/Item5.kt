@@ -1,24 +1,11 @@
 package ink.ptms.um.impl5
 
 import ink.ptms.um.Item
-import io.lumine.mythic.bukkit.utils.config.file.YamlConfiguration
-import io.lumine.mythic.core.config.MythicConfigImpl
 import io.lumine.mythic.core.items.MythicItem
-import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
-import org.yaml.snakeyaml.Yaml
+import taboolib.library.configuration.ConfigurationSection
 
-class Item5(obj: Any) : Item {
-
-    val source = obj as MythicItem
-
-    val root by lazy {
-        val config = (source.config as MythicConfigImpl).fileConfiguration as YamlConfiguration
-        val clazz = config.javaClass
-        val yamlField = clazz.getDeclaredField("yaml")
-        yamlField.isAccessible = true
-        yamlField.get(config) as Yaml
-    }
+class Item5(val source: MythicItem) : Item {
 
     override val internalName: String
         get() = source.internalName
@@ -29,9 +16,8 @@ class Item5(obj: Any) : Item {
     override val displayName: String?
         get() = source.displayName
 
-    override fun getConfig(): Yaml {
-        return root
-    }
+    override val config: ConfigurationSection
+        get() = Mob5Configuration(source.config)
 
     override fun generateItemStack(amount: Int): ItemStack {
         return source.generateItemStack(amount).toBukkit()

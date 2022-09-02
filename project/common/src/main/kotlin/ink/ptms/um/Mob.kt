@@ -1,9 +1,8 @@
 package ink.ptms.um
 
-import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
-import org.yaml.snakeyaml.Yaml
+import taboolib.library.configuration.ConfigurationSection
 
 /**
  * universal-mythic
@@ -57,5 +56,5 @@ interface Mob {
     /**
      * 配置
      */
-    val config: Yaml
+    val config: ConfigurationSection
 }

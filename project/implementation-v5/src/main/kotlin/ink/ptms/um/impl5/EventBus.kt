@@ -21,7 +21,7 @@ object EventBus {
     @Ghost
     @SubscribeEvent
     fun onMobSpawnEvent(event: MythicMobSpawnEvent) {
-        val bus = MobSpawnEvent(Mob5(event.mob), event.mobLevel).fire()
+        val bus = MobSpawnEvent(Mob5(event.mob), MobType5(event.mobType), event.mobLevel).fire()
         event.mobLevel = bus.level
     }
 

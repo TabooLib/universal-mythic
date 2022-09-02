@@ -2,6 +2,7 @@ package ink.ptms.um.impl5
 
 import ink.ptms.um.*
 import io.lumine.mythic.api.MythicProvider
+import io.lumine.mythic.api.skills.SkillTrigger
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.core.config.MythicLineConfigImpl
 import io.lumine.mythic.core.mobs.MobExecutor
@@ -59,13 +60,11 @@ class Mythic5 : Mythic {
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {
-        return Skill5.Trigger(
-            io.lumine.mythic.api.skills.SkillTrigger::class.java.invokeMethod<Any>(
-                "get",
-                name.uppercase(),
-                fixed = true
-            )!!
-        )
+        return Skill5.Trigger(SkillTrigger.get(name.uppercase()))
+    }
+
+    override fun getDefaultSkillTrigger(): Skill.Trigger {
+        return Skill5.Trigger(SkillTrigger.get("DEFAULT"))
     }
 
     override fun getSkillMechanic(skillLine: String): Skill? {

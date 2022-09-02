@@ -7,17 +7,7 @@ import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
 import org.yaml.snakeyaml.Yaml
 
-class Item4(obj: Any) : Item {
-
-    val source = obj as MythicItem
-
-    val root by lazy {
-        val config = source.config.fileConfiguration as YamlConfiguration
-        val clazz = config.javaClass
-        val yamlField = clazz.getDeclaredField("yaml")
-        yamlField.isAccessible = true
-        yamlField.get(config) as Yaml
-    }
+class Item4(val source: MythicItem) : Item {
 
     override val internalName: String
         get() = source.internalName
@@ -28,12 +18,10 @@ class Item4(obj: Any) : Item {
     override val displayName: String?
         get() = source.displayName
 
-    override fun getConfig(): Yaml {
-        return root
-    }
+    override val config: taboolib.library.configuration.ConfigurationSection
+        get() = Mob4Configuration(source.config)
 
     override fun generateItemStack(amount: Int): ItemStack {
         return source.generateItemStack(amount).toBukkit()
     }
-
 }

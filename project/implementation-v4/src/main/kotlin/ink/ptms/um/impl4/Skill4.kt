@@ -16,9 +16,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import java.util.function.Function
 
-class Skill4(obj: Any) : Skill {
-
-    val source = obj as SkillMechanic
+class Skill4(val source: SkillMechanic) : Skill {
 
     override val delay: Int = (source as? DelaySkill)?.ticks ?: -1
 
