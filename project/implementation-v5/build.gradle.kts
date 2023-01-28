@@ -17,6 +17,8 @@ taboolib {
 
 dependencies {
     api(project(":project:common"))
+    compileOnly("com.electronwill.night-config:core-conversion:6.0.0")
+    compileOnly("com.electronwill.night-config:core:3.6.6")
     compileOnly("public:MythicMobs5:5.0.4")
     compileOnly("ink.ptms:nms-all:1.0.0")
     compileOnly("org.yaml:snakeyaml:1.26")

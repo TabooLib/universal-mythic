@@ -1,5 +1,6 @@
 package ink.ptms.um.impl4
 
+import com.electronwill.nightconfig.core.CommentedConfig
 import io.lumine.xikage.mythicmobs.io.MythicConfig
 import io.lumine.xikage.mythicmobs.utils.config.file.FileConfiguration
 import taboolib.library.configuration.ConfigurationSection
@@ -24,7 +25,15 @@ class Mob4Configuration(val config: MythicConfig) : ConfigurationSection {
     override val type: Type
         get() = Type.YAML
 
-    val root: FileConfiguration = kotlin.runCatching { config.fileConfiguration }.getOrElse { config.getProperty<FileConfiguration>("fc")!! }
+    override fun addComments(path: String, comments: List<String>) {
+        getComments(path).toMutableList().apply {
+            addAll(comments)
+            setComments(path, this)
+        }
+    }
+
+    val root: FileConfiguration =
+        kotlin.runCatching { config.fileConfiguration }.getOrElse { config.getProperty<FileConfiguration>("fc")!! }
 
     override fun clear() {
         error("Unmodifiable")
@@ -67,7 +76,11 @@ class Mob4Configuration(val config: MythicConfig) : ConfigurationSection {
     }
 
     override fun getComment(path: String): String? {
-        return null
+        return (root as? CommentedConfig)?.getComment(path)
+    }
+
+    override fun getComments(path: String): List<String> {
+        return getComment(path)?.lines() ?: emptyList()
     }
 
     override fun getConfigurationSection(path: String): ConfigurationSection? {
@@ -187,11 +200,15 @@ class Mob4Configuration(val config: MythicConfig) : ConfigurationSection {
     }
 
     override fun set(path: String, value: Any?) {
-        error("Unmodifiable")
+        root.set(path, value)
     }
 
     override fun setComment(path: String, comment: String?) {
-        error("Unmodifiable")
+        (root as? CommentedConfig)?.setComment(path, if (comment?.isBlank() == true) null else comment)
+    }
+
+    override fun setComments(path: String, comments: List<String>) {
+        return setComment(path, comments.joinToString("\n"))
     }
 
     override fun toMap(): Map<String, Any?> {

@@ -1,5 +1,6 @@
 package ink.ptms.um.impl5
 
+import com.electronwill.nightconfig.core.CommentedConfig
 import io.lumine.mythic.api.config.MythicConfig
 import io.lumine.mythic.bukkit.utils.config.file.FileConfiguration
 import io.lumine.mythic.core.config.MythicConfigImpl
@@ -26,6 +27,13 @@ class Mob5Configuration(sourceConfig: MythicConfig) : ConfigurationSection {
 
     override val type: Type
         get() = Type.YAML
+
+    override fun addComments(path: String, comments: List<String>) {
+        getComments(path).toMutableList().apply {
+            addAll(comments)
+            setComments(path, this)
+        }
+    }
 
     val root: FileConfiguration = kotlin.runCatching { config.fileConfiguration }.getOrElse { config.getProperty<FileConfiguration>("fc")!! }
 
@@ -70,7 +78,11 @@ class Mob5Configuration(sourceConfig: MythicConfig) : ConfigurationSection {
     }
 
     override fun getComment(path: String): String? {
-        return null
+        return (root as? CommentedConfig)?.getComment(path)
+    }
+
+    override fun getComments(path: String): List<String> {
+        return getComment(path)?.lines() ?: emptyList()
     }
 
     override fun getConfigurationSection(path: String): ConfigurationSection? {
@@ -190,11 +202,15 @@ class Mob5Configuration(sourceConfig: MythicConfig) : ConfigurationSection {
     }
 
     override fun set(path: String, value: Any?) {
-        error("Unmodifiable")
+        root.set(path, value)
     }
 
     override fun setComment(path: String, comment: String?) {
-        error("Unmodifiable")
+        (root as? CommentedConfig)?.setComment(path, if (comment?.isBlank() == true) null else comment)
+    }
+
+    override fun setComments(path: String, comments: List<String>) {
+        return setComment(path, comments.joinToString("\n"))
     }
 
     override fun toMap(): Map<String, Any?> {
