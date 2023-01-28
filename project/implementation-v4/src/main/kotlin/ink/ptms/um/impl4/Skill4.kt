@@ -57,6 +57,7 @@ class Skill4(val source: SkillMechanic) : Skill {
     class MythicCaster4(entity: AbstractEntity?, override val args: Map<String, Any>) :
         io.lumine.xikage.mythicmobs.mobs.GenericCaster(entity), Skill.MythicCaster
 
+
     class MythicSkillMetadata4(
         cause: SkillTrigger,
         am: SkillCaster,
