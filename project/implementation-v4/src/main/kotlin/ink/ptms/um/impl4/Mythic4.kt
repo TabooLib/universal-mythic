@@ -21,38 +21,63 @@ class Mythic4 : Mythic {
     val api: MythicMobs
         get() = MythicMobs.inst()
 
+    val itemManager by lazy {
+        api.itemManager
+    }
+
+    val mobManager by lazy {
+        api.mobManager
+    }
+
+    val skillManager by lazy {
+        api.skillManager
+    }
+
     override val isLegacy = true
 
     override fun getItem(name: String): Item? {
-        return Item4(api.itemManager.getItem(name)?.get() ?: return null)
+        return Item4(itemManager.getItem(name)?.get() ?: return null)
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
-        return api.itemManager.items.firstOrNull { itemStack.isSimilar(it.generateItemStack(itemStack.amount).toBukkit()) }?.internalName
+        return getItemList().firstOrNull { item: Item ->
+            itemStack.isSimilar(
+                item.generateItemStack(-1)
+            )
+        }?.internalName
     }
 
     override fun getItemStack(name: String): ItemStack? {
-        return api.itemManager.getItemStack(name)
+        return itemManager.getItemStack(name)
     }
 
     override fun getItemIDList(): List<String> {
-        return api.itemManager.items.map { it.internalName }
+        return itemManager.items.map { it.internalName }
     }
 
     override fun getItemList(): List<Item> {
-        return api.itemManager.items.map { Item4(it) }
+        if (itemManager.items.size == Cache.item.size) {
+            return Cache.item.values.toList()
+        }
+        return itemManager.items.map {
+            Cache.item.getOrPut(it.internalName) { Item4(it) }
+        }
     }
 
     override fun getMob(entity: Entity): Mob? {
-        return Mob4(MythicMobs.inst().mobManager.getMythicMobInstance(entity) ?: return null)
+        return mobManager.getMythicMobInstance(entity)?.let {
+            return Cache.mob.getOrPut(it.uniqueId) { Mob4(it) }
+        }
     }
 
     override fun getMobIDList(): List<String> {
-        return api.mobManager.mobNames.toList()
+        return mobManager.mobNames.toList()
     }
 
     override fun getMobType(name: String): MobType? {
-        return MobType4(api.mobManager.getMythicMob(name) ?: return null)
+        return mobManager.getMythicMob(name)?.let {
+            Cache.mobType.getOrPut(it.internalName) { MobType4(it) }
+        }
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {
@@ -64,7 +89,9 @@ class Mythic4 : Mythic {
     }
 
     override fun getSkillMechanic(skillLine: String): Skill? {
-        return Skill4(MythicMobs.inst().skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine)) ?: return null)
+        return skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine))?.let {
+            Skill4(it)
+        }
     }
 
     override fun castSkill(
@@ -76,7 +103,7 @@ class Mythic4 : Mythic {
         lTargets: Collection<Location>,
         power: Float,
     ): Boolean {
-        return MythicMobs.inst().apiHelper.castSkill(caster, skillName, trigger, origin, eTargets, lTargets, power)
+        return api.apiHelper.castSkill(caster, skillName, trigger, origin, eTargets, lTargets, power)
     }
 
     object Loader {

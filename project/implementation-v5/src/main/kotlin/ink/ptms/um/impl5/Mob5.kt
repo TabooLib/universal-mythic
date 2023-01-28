@@ -23,7 +23,7 @@ class Mob5(val source: ActiveMob) : Mob {
         get() = source.displayName
 
     override val type: MobType
-        get() = MobType5(source.type)
+        get() = Cache.mobType.getOrPut(id) { MobType5(source.type) }
 
     override val entity: Entity
         get() = source.entity.bukkitEntity
@@ -41,5 +41,5 @@ class Mob5(val source: ActiveMob) : Mob {
         get() = source.faction
 
     override val config: ConfigurationSection
-        get() = Mob5Configuration(source.type.config)
+        get() = type.config
 }

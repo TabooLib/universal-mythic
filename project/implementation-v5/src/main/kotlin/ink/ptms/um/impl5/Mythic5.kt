@@ -27,7 +27,9 @@ class Mythic5 : Mythic {
     override val isLegacy = false
 
     override fun getItem(name: String): Item? {
-        return Item5(api.itemManager.getItem(name)?.get() ?: return null)
+        return api.itemManager.getItem(name)?.get()?.let {
+            Cache.item.getOrPut(it.internalName) { Item5(it) }
+        }
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
@@ -43,11 +45,18 @@ class Mythic5 : Mythic {
     }
 
     override fun getItemList(): List<Item> {
-        return api.itemManager.items.map { Item5(it) }
+        if (api.itemManager.items.size == Cache.item.size) {
+            return Cache.item.values.toList()
+        }
+        return api.itemManager.items.map {
+            Cache.item.getOrPut(it.internalName) { Item5(it) }
+        }
     }
 
     override fun getMob(entity: Entity): Mob? {
-        return Mob5((MythicProvider.get().mobManager as MobExecutor).getMythicMobInstance(entity) ?: return null)
+        return (MythicProvider.get().mobManager as MobExecutor).getMythicMobInstance(entity)?.let {
+            Cache.mob.getOrPut(it.uniqueId) { Mob5(it) }
+        }
     }
 
     override fun getMobIDList(): List<String> {
@@ -55,7 +64,9 @@ class Mythic5 : Mythic {
     }
 
     override fun getMobType(name: String): MobType? {
-        return MobType5(api.mobManager.getMythicMob(name)?.get() ?: return null)
+        return api.mobManager.getMythicMob(name)?.get()?.let {
+            Cache.mobType.getOrPut(it.internalName) { MobType5(it) }
+        }
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {

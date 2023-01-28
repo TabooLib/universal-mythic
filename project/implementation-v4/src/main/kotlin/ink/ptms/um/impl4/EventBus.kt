@@ -15,7 +15,11 @@ object EventBus {
     @Ghost
     @SubscribeEvent
     fun onMobDeathEvent(event: MythicMobDeathEvent) {
-        val bus = MobDeathEvent(Mob4(event.mob), event.killer, event.drops).fire()
+        val bus = MobDeathEvent(
+            Cache.mob.getOrPut(event.mob.uniqueId) { Mob4(event.mob) },
+            event.killer,
+            event.drops
+        ).fire()
         event.drops = bus.drop
     }
 
@@ -23,15 +27,29 @@ object EventBus {
     @SubscribeEvent
     fun onMobSpawnEvent(event: MythicMobSpawnEvent) {
         // 在较低的 MythicMobs 版本下无法在 MythicMobSpawnEvent 中获取 mob 参数
-        val mob = kotlin.runCatching { Mob4(event.mob) }.getOrElse { MythicMobs.inst().mobManager.getMythicMobInstance(event.entity)?.let { Mob4(it) } }
+        val mob = kotlin.runCatching { Cache.mob.getOrPut(event.mob.uniqueId) { Mob4(event.mob) } }
+            .getOrElse {
+                MythicMobs.inst().mobManager.getMythicMobInstance(event.entity)?.let {
+                    Cache.mob.getOrPut(event.mob.uniqueId) { Mob4(it) }
+                }
+            }
         val level = kotlin.runCatching { event.mobLevel }.getOrElse { 0.0 }
-        val bus = MobSpawnEvent(mob, MobType4(event.mobType), level).fire()
+        val bus = MobSpawnEvent(
+                mob,
+                Cache.mobType.getOrPut(event.mobType.internalName) { MobType4(event.mobType) },
+                level
+            ).fire()
         kotlin.runCatching { event.mobLevel = bus.level }
     }
 
     @Ghost
     @SubscribeEvent
     fun onMythicReloadEvent(event: MythicReloadedEvent) {
+        Cache.mob.clear()
+        Cache.mobConfiguration.clear()
+        Cache.mobType.clear()
+        Cache.item.clear()
+        Cache.itemConfiguration.clear()
         MythicReloadEvent().fire()
     }
 }

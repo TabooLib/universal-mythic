@@ -18,9 +18,13 @@ class MobType5(val source: MythicMob) : MobType {
         get() = source.entityType
 
     override val config: ConfigurationSection
-        get() = Mob5Configuration(source.config)
+        get() = Cache.mobConfiguration.getOrPut(id) { Mob5Configuration(source.config) }
 
     override fun spawn(location: Location, level: Double): Mob {
-        return Mob5(source.spawn(location.toMythic(), level))
+        return source.spawn(location.toMythic(), level).let {
+            Mob5(it).apply {
+                Cache.mob[it.uniqueId] = this
+            }
+        }
     }
 }

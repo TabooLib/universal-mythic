@@ -14,20 +14,33 @@ object EventBus {
     @Ghost
     @SubscribeEvent
     fun onMobDeathEvent(event: MythicMobDeathEvent) {
-        val bus = MobDeathEvent(Mob5(event.mob), event.killer, event.drops).fire()
+        val bus = MobDeathEvent(
+            Cache.mob.getOrPut(event.mob.uniqueId) { Mob5(event.mob) },
+            event.killer,
+            event.drops
+        ).fire()
         event.drops = bus.drop
     }
 
     @Ghost
     @SubscribeEvent
     fun onMobSpawnEvent(event: MythicMobSpawnEvent) {
-        val bus = MobSpawnEvent(Mob5(event.mob), MobType5(event.mobType), event.mobLevel).fire()
+        val bus = MobSpawnEvent(
+            Cache.mob.getOrPut(event.mob.uniqueId) { Mob5(event.mob) },
+            Cache.mobType.getOrPut(event.mobType.internalName) { MobType5(event.mobType) },
+            event.mobLevel
+        ).fire()
         event.mobLevel = bus.level
     }
 
     @Ghost
     @SubscribeEvent
     fun onMythicReloadEvent(event: MythicReloadedEvent) {
+        Cache.mob.clear()
+        Cache.mobConfiguration.clear()
+        Cache.mobType.clear()
+        Cache.item.clear()
+        Cache.itemConfiguration.clear()
         MythicReloadEvent().fire()
     }
 }

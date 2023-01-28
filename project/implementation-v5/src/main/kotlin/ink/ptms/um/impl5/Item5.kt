@@ -17,10 +17,19 @@ class Item5(val source: MythicItem) : Item {
         get() = source.displayName
 
     override val config: ConfigurationSection
-        get() = Mob5Configuration(source.config)
+        get() = Cache.itemConfiguration.getOrPut(internalName) { Mob5Configuration(source.config) }
+
+    private val bukkitItem by lazy {
+        source.generateItemStack(amount).toBukkit()
+    }
 
     override fun generateItemStack(amount: Int): ItemStack {
-        return source.generateItemStack(amount).toBukkit()
+        if (amount < 0) {
+            return bukkitItem.clone()
+        }
+        return bukkitItem.clone().apply {
+            this.amount = amount
+        }
     }
 
 }
