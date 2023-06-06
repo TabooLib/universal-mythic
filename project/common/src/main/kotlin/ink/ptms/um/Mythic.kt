@@ -36,22 +36,34 @@ interface Mythic {
     /** 获取技能类型 */
     fun getSkillTrigger(name: String): Skill.Trigger
 
-    /**
-     * 获取默认技能类型
-     */
+    /** 获取默认技能类型 */
     fun getDefaultSkillTrigger(): Skill.Trigger
 
-    /** 将字符串转换为技能实例 */
+    /**
+     * 将字符串转换为技能实例
+     *
+     * @param skillLine 技能字符串（如：`message{m="text"}`）
+     */
     fun getSkillMechanic(skillLine: String): Skill?
 
-    /** 释放MM技能 */
+    /**
+     * 释放技能
+     *
+     * @param caster 施法者
+     * @param skillName 技能名称
+     * @param trigger 触发器
+     * @param origin 技能释放位置
+     * @param et 技能释放目标
+     * @param lt 技能释放位置
+     * @param power 技能释放强度
+     */
     fun castSkill(
         caster: Entity,
         skillName: String,
         trigger: Entity? = null,
         origin: Location = caster.location,
-        eTargets: Collection<Entity> = emptyList(),
-        lTargets: Collection<Location> = emptyList(),
+        et: Collection<Entity> = emptyList(),
+        lt: Collection<Location> = emptyList(),
         power: Float = 1f,
     ): Boolean
 

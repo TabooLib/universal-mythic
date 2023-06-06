@@ -2,21 +2,24 @@ package ink.ptms.um.impl5
 
 import ink.ptms.um.Skill
 import io.lumine.mythic.api.adapters.AbstractEntity
+import io.lumine.mythic.api.mobs.GenericCaster
 import io.lumine.mythic.api.skills.SkillTrigger
 import io.lumine.mythic.api.skills.placeholders.PlaceholderInt
+import io.lumine.mythic.bukkit.BukkitAdapter
+import io.lumine.mythic.bukkit.adapters.BukkitPlayer
 import io.lumine.mythic.core.skills.SkillMechanic
 import io.lumine.mythic.core.skills.SkillMetadataImpl
+import io.lumine.mythic.core.skills.mechanics.DelaySkill
 import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
-import taboolib.common.reflect.Reflex.Companion.getProperty
-import taboolib.common.reflect.Reflex.Companion.invokeConstructor
+import taboolib.library.reflex.Reflex.Companion.getProperty
 
-class Skill5(obj: Any) : Skill {
+internal class Skill5(obj: Any) : Skill {
 
     val source = obj as SkillMechanic
 
-    val placeholderDelay = (source as? io.lumine.mythic.core.skills.mechanics.DelaySkill)?.getProperty<PlaceholderInt>("ticks")
+    val placeholderDelay = (source as? DelaySkill)?.getProperty<PlaceholderInt>("ticks")
 
     override val delay: Int
         get() = placeholderDelay?.get() ?: -1
@@ -25,25 +28,21 @@ class Skill5(obj: Any) : Skill {
         trigger: Skill.Trigger,
         entity: Entity,
         target: Entity,
-        entityTargets: Set<Entity>,
-        locationTargets: Set<Location>,
+        et: Set<Entity>,
+        lt: Set<Location>,
         power: Float,
-        args: Map<String, Any>,
+        parameters: Map<String, Any>,
         targetFilter: (Entity) -> Boolean
     ): Boolean {
-        val caster: io.lumine.mythic.api.adapters.AbstractEntity = if (entity is Player) {
-            io.lumine.mythic.bukkit.adapters.BukkitPlayer(entity)
-        } else {
-            io.lumine.mythic.bukkit.BukkitAdapter.adapt(entity)
-        }
+        val caster = if (entity is Player) BukkitPlayer(entity) else BukkitAdapter.adapt(entity)
         return source.execute(
-            SkillMetadataImpl::class.java.invokeConstructor(
+            SkillMetadataImpl(
                 (trigger as Trigger).source,
-                MythicCaster5(caster, args),
-                io.lumine.mythic.bukkit.BukkitAdapter.adapt(target),
-                io.lumine.mythic.bukkit.BukkitAdapter.adapt(entity.location),
-                entityTargets.map { io.lumine.mythic.bukkit.BukkitAdapter.adapt(it) }.toHashSet(),
-                locationTargets.map { io.lumine.mythic.bukkit.BukkitAdapter.adapt(it) }.toHashSet(),
+                CasterImpl(caster, parameters),
+                BukkitAdapter.adapt(target),
+                BukkitAdapter.adapt(entity.location),
+                et.map { BukkitAdapter.adapt(it) }.toHashSet(),
+                lt.map { BukkitAdapter.adapt(it) }.toHashSet(),
                 power
             )
         )
@@ -54,10 +53,7 @@ class Skill5(obj: Any) : Skill {
         val source = obj as SkillTrigger
 
         override val name: String = source.getProperty<String>("name")!!
-
     }
 
-    class MythicCaster5(entity: AbstractEntity?, override val args: Map<String, Any>) :
-        io.lumine.mythic.api.mobs.GenericCaster(entity), Skill.MythicCaster
-
+    class CasterImpl(entity: AbstractEntity?, override val parameters: Map<String, Any>) : GenericCaster(entity), Skill.ActiveCaster
 }

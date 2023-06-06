@@ -8,18 +8,18 @@ import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
 
-fun AbstractItemStack.toBukkit(): ItemStack {
+internal fun AbstractItemStack.toBukkit(): ItemStack {
     return BukkitAdapter.adapt(this)
 }
 
-fun AbstractLocation.toBukkit(): Location {
+internal fun AbstractLocation.toBukkit(): Location {
     return BukkitAdapter.adapt(this)
 }
 
-fun Location.toMythic(): AbstractLocation {
+internal fun Location.toMythic(): AbstractLocation {
     return BukkitAdapter.adapt(this)
 }
 
-fun Entity.toMythic(): AbstractEntity {
+internal fun Entity.toMythic(): AbstractEntity {
     return BukkitAdapter.adapt(this)
 }

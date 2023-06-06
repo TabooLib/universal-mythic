@@ -6,6 +6,7 @@ import io.lumine.xikage.mythicmobs.adapters.AbstractEntity
 import io.lumine.xikage.mythicmobs.adapters.AbstractLocation
 import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter
 import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitPlayer
+import io.lumine.xikage.mythicmobs.mobs.GenericCaster
 import io.lumine.xikage.mythicmobs.skills.SkillCaster
 import io.lumine.xikage.mythicmobs.skills.SkillMechanic
 import io.lumine.xikage.mythicmobs.skills.SkillMetadata
@@ -16,7 +17,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import java.util.function.Function
 
-class Skill4(val source: SkillMechanic) : Skill {
+internal class Skill4(val source: SkillMechanic) : Skill {
 
     override val delay: Int = (source as? DelaySkill)?.ticks ?: -1
 
@@ -24,22 +25,22 @@ class Skill4(val source: SkillMechanic) : Skill {
         trigger: Skill.Trigger,
         entity: Entity,
         target: Entity,
-        entityTargets: Set<Entity>,
-        locationTargets: Set<Location>,
+        et: Set<Entity>,
+        lt: Set<Location>,
         power: Float,
-        args: Map<String, Any>,
+        parameters: Map<String, Any>,
         targetFilter: (Entity) -> Boolean
     ): Boolean {
-        val caster: AbstractEntity = if (entity is Player) BukkitPlayer(entity) else BukkitAdapter.adapt(entity)
+        val caster = if (entity is Player) BukkitPlayer(entity) else BukkitAdapter.adapt(entity)
         MythicMobs.inst().skillManager.runSecondPass()
         return source.executeSkills(
-            MythicSkillMetadata4(
+            MetadataImpl(
                 (trigger as Trigger).source,
-                MythicCaster4(caster, args),
+                CasterImpl(caster, parameters),
                 BukkitAdapter.adapt(target),
                 BukkitAdapter.adapt(entity.location),
-                entityTargets.map { BukkitAdapter.adapt(it) }.toHashSet(),
-                locationTargets.map { BukkitAdapter.adapt(it) }.toHashSet(),
+                et.map { BukkitAdapter.adapt(it) }.toHashSet(),
+                lt.map { BukkitAdapter.adapt(it) }.toHashSet(),
                 power,
                 targetFilter
             )
@@ -51,31 +52,26 @@ class Skill4(val source: SkillMechanic) : Skill {
         val source = obj as SkillTrigger
 
         override val name: String = source.name
-
     }
 
-    class MythicCaster4(entity: AbstractEntity?, override val args: Map<String, Any>) :
-        io.lumine.xikage.mythicmobs.mobs.GenericCaster(entity), Skill.MythicCaster
+    /**
+     * 技能施法者内部实现
+     */
+    class CasterImpl(entity: AbstractEntity?, override val parameters: Map<String, Any>) : GenericCaster(entity), Skill.ActiveCaster
 
-
-    class MythicSkillMetadata4(
+    /**
+     * 技能元数据内部实现
+     */
+    class MetadataImpl(
         cause: SkillTrigger,
-        am: SkillCaster,
+        caster: SkillCaster,
         trigger: AbstractEntity,
         origin: AbstractLocation,
-        eTargets: HashSet<AbstractEntity>,
-        lTargets: HashSet<AbstractLocation>,
+        et: HashSet<AbstractEntity>,
+        lt: HashSet<AbstractLocation>,
         power: Float,
         val targetFilter: Function<Entity, Boolean>
-    ) : SkillMetadata(
-        cause,
-        am,
-        trigger,
-        origin,
-        eTargets.filter { targetFilter.apply(it.bukkitEntity) }.toHashSet(),
-        lTargets,
-        power
-    ) {
+    ) : SkillMetadata(cause, caster, trigger, origin, et.filter { targetFilter.apply(it.bukkitEntity) }.toHashSet(), lt, power) {
 
         override fun setEntityTarget(target: AbstractEntity): SkillMetadata {
             if (targetFilter.apply(target.bukkitEntity)) {

@@ -15,7 +15,7 @@ import taboolib.module.configuration.Type
  * @author 坏黑
  * @since 2022/9/2 14:46
  */
-class Mob5Configuration(sourceConfig: MythicConfig) : ConfigurationSection {
+internal class MobConfiguration5(sourceConfig: MythicConfig) : ConfigurationSection {
 
     val config = sourceConfig as MythicConfigImpl
 
@@ -35,7 +35,7 @@ class Mob5Configuration(sourceConfig: MythicConfig) : ConfigurationSection {
         }
     }
 
-    val root: FileConfiguration = kotlin.runCatching { config.fileConfiguration }.getOrElse { config.getProperty<FileConfiguration>("fc")!! }
+    val root: FileConfiguration = runCatching { config.fileConfiguration }.getOrElse { config.getProperty<FileConfiguration>("fc")!! }
 
     override fun clear() {
         error("Unmodifiable")
@@ -86,7 +86,7 @@ class Mob5Configuration(sourceConfig: MythicConfig) : ConfigurationSection {
     }
 
     override fun getConfigurationSection(path: String): ConfigurationSection? {
-        return root.getConfigurationSection("$name.$path")?.let { Mob5Configuration(MythicConfigImpl("$name.$path", root)) }
+        return root.getConfigurationSection("$name.$path")?.let { MobConfiguration5(MythicConfigImpl("$name.$path", root)) }
     }
 
     override fun getDouble(path: String): Double {

@@ -9,38 +9,23 @@ import io.lumine.mythic.bukkit.events.MythicReloadedEvent
 import taboolib.common.platform.Ghost
 import taboolib.common.platform.event.SubscribeEvent
 
-object EventBus {
+internal object MobListener5 {
 
     @Ghost
     @SubscribeEvent
     fun onMobDeathEvent(event: MythicMobDeathEvent) {
-        val bus = MobDeathEvent(
-            Cache.mob.getOrPut(event.mob.uniqueId) { Mob5(event.mob) },
-            event.killer,
-            event.drops
-        ).fire()
-        event.drops = bus.drop
+        event.drops = MobDeathEvent(Mob5(event.mob), event.killer, event.drops).fire().drop
     }
 
     @Ghost
     @SubscribeEvent
     fun onMobSpawnEvent(event: MythicMobSpawnEvent) {
-        val bus = MobSpawnEvent(
-            Cache.mob.getOrPut(event.mob.uniqueId) { Mob5(event.mob) },
-            Cache.mobType.getOrPut(event.mobType.internalName) { MobType5(event.mobType) },
-            event.mobLevel
-        ).fire()
-        event.mobLevel = bus.level
+        event.mobLevel = MobSpawnEvent(Mob5(event.mob), MobType5(event.mob.type), event.mobLevel).fire().level
     }
 
     @Ghost
     @SubscribeEvent
     fun onMythicReloadEvent(event: MythicReloadedEvent) {
-        Cache.mob.clear()
-        Cache.mobConfiguration.clear()
-        Cache.mobType.clear()
-        Cache.item.clear()
-        Cache.itemConfiguration.clear()
         MythicReloadEvent().fire()
     }
 }

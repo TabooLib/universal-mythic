@@ -1,6 +1,7 @@
 package ink.ptms.um.impl5
 
 import ink.ptms.um.*
+import ink.ptms.um.Skill
 import io.lumine.mythic.api.MythicProvider
 import io.lumine.mythic.api.skills.SkillTrigger
 import io.lumine.mythic.bukkit.MythicBukkit
@@ -11,6 +12,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
+import taboolib.common.util.orNull
 import taboolib.module.nms.getItemTag
 
 /**
@@ -19,7 +21,7 @@ import taboolib.module.nms.getItemTag
  * @author 坏黑
  * @since 2022/7/12 13:47
  */
-class Mythic5 : Mythic {
+internal class Mythic5 : Mythic {
 
     val api: MythicBukkit
         get() = MythicProvider.get() as MythicBukkit
@@ -27,9 +29,7 @@ class Mythic5 : Mythic {
     override val isLegacy = false
 
     override fun getItem(name: String): Item? {
-        return api.itemManager.getItem(name)?.get()?.let {
-            Cache.item.getOrPut(it.internalName) { Item5(it) }
-        }
+        return Item5(api.itemManager.getItem(name).orNull() ?: return null)
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
@@ -45,18 +45,11 @@ class Mythic5 : Mythic {
     }
 
     override fun getItemList(): List<Item> {
-        if (api.itemManager.items.size == Cache.item.size) {
-            return Cache.item.values.toList()
-        }
-        return api.itemManager.items.map {
-            Cache.item.getOrPut(it.internalName) { Item5(it) }
-        }
+        return api.itemManager.items.map { Item5(it) }
     }
 
     override fun getMob(entity: Entity): Mob? {
-        return (MythicProvider.get().mobManager as MobExecutor).getMythicMobInstance(entity)?.let {
-            Cache.mob.getOrPut(it.uniqueId) { Mob5(it) }
-        }
+        return Mob5((MythicProvider.get().mobManager as MobExecutor).getMythicMobInstance(entity) ?: return null)
     }
 
     override fun getMobIDList(): List<String> {
@@ -64,9 +57,7 @@ class Mythic5 : Mythic {
     }
 
     override fun getMobType(name: String): MobType? {
-        return api.mobManager.getMythicMob(name)?.get()?.let {
-            Cache.mobType.getOrPut(it.internalName) { MobType5(it) }
-        }
+        return MobType5(api.mobManager.getMythicMob(name).orNull() ?: return null)
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {
@@ -86,18 +77,18 @@ class Mythic5 : Mythic {
         skillName: String,
         trigger: Entity?,
         origin: Location,
-        eTargets: Collection<Entity>,
-        lTargets: Collection<Location>,
+        et: Collection<Entity>,
+        lt: Collection<Location>,
         power: Float,
     ): Boolean {
-        return api.apiHelper.castSkill(caster, skillName, trigger, origin, eTargets, lTargets, power)
+        return api.apiHelper.castSkill(caster, skillName, trigger, origin, et, lt, power)
     }
 
     object Loader {
 
         @Awake(LifeCycle.ENABLE)
         fun setup() {
-            if (kotlin.runCatching { Class.forName("io.lumine.mythic.api.MythicProvider") }.getOrNull() != null) {
+            if (runCatching { Class.forName("io.lumine.mythic.api.MythicProvider") }.getOrNull() != null) {
                 Mythic.API = Mythic5()
             }
         }

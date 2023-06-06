@@ -1,14 +1,19 @@
 package ink.ptms.um.impl4
 
 import ink.ptms.um.*
+import ink.ptms.um.Skill
 import io.lumine.xikage.mythicmobs.MythicMobs
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
+import io.lumine.xikage.mythicmobs.items.ItemManager
+import io.lumine.xikage.mythicmobs.mobs.MobManager
+import io.lumine.xikage.mythicmobs.skills.SkillManager
 import io.lumine.xikage.mythicmobs.skills.SkillTrigger
 import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
+import taboolib.common.util.unsafeLazy
 
 /**
  * universal-mythic ink.ptms.um.impl4.Mythic4
@@ -16,22 +21,16 @@ import taboolib.common.platform.Awake
  * @author 坏黑
  * @since 2022/7/12 13:47
  */
-class Mythic4 : Mythic {
+internal class Mythic4 : Mythic {
 
     val api: MythicMobs
         get() = MythicMobs.inst()
 
-    val itemManager by lazy {
-        api.itemManager
-    }
+    val mobManager: MobManager by unsafeLazy { api.mobManager }
 
-    val mobManager by lazy {
-        api.mobManager
-    }
+    val itemManager: ItemManager by unsafeLazy { api.itemManager }
 
-    val skillManager by lazy {
-        api.skillManager
-    }
+    val skillManager: SkillManager by unsafeLazy { api.skillManager }
 
     override val isLegacy = true
 
@@ -40,11 +39,7 @@ class Mythic4 : Mythic {
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
-        return getItemList().firstOrNull { item: Item ->
-            itemStack.isSimilar(
-                item.generateItemStack(-1)
-            )
-        }?.internalName
+        return getItemList().firstOrNull { item -> itemStack.isSimilar(item.generateItemStack(-1)) }?.internalName
     }
 
     override fun getItemStack(name: String): ItemStack? {
@@ -56,18 +51,11 @@ class Mythic4 : Mythic {
     }
 
     override fun getItemList(): List<Item> {
-        if (itemManager.items.size == Cache.item.size) {
-            return Cache.item.values.toList()
-        }
-        return itemManager.items.map {
-            Cache.item.getOrPut(it.internalName) { Item4(it) }
-        }
+        return itemManager.items.map { Item4(it) }
     }
 
     override fun getMob(entity: Entity): Mob? {
-        return mobManager.getMythicMobInstance(entity)?.let {
-            return Cache.mob.getOrPut(it.uniqueId) { Mob4(it) }
-        }
+        return Mob4(mobManager.getMythicMobInstance(entity) ?: return null)
     }
 
     override fun getMobIDList(): List<String> {
@@ -75,9 +63,7 @@ class Mythic4 : Mythic {
     }
 
     override fun getMobType(name: String): MobType? {
-        return mobManager.getMythicMob(name)?.let {
-            Cache.mobType.getOrPut(it.internalName) { MobType4(it) }
-        }
+        return MobType4(mobManager.getMythicMob(name) ?: return null)
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {
@@ -89,9 +75,7 @@ class Mythic4 : Mythic {
     }
 
     override fun getSkillMechanic(skillLine: String): Skill? {
-        return skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine))?.let {
-            Skill4(it)
-        }
+        return Skill4(skillManager.getSkillMechanic(MythicLineConfig.unparseBlock(skillLine)) ?: return null)
     }
 
     override fun castSkill(
@@ -99,18 +83,18 @@ class Mythic4 : Mythic {
         skillName: String,
         trigger: Entity?,
         origin: Location,
-        eTargets: Collection<Entity>,
-        lTargets: Collection<Location>,
+        et: Collection<Entity>,
+        lt: Collection<Location>,
         power: Float,
     ): Boolean {
-        return api.apiHelper.castSkill(caster, skillName, trigger, origin, eTargets, lTargets, power)
+        return api.apiHelper.castSkill(caster, skillName, trigger, origin, et, lt, power)
     }
 
     object Loader {
 
         @Awake(LifeCycle.ENABLE)
         fun setup() {
-            if (kotlin.runCatching { Class.forName("io.lumine.xikage.mythicmobs.MythicMobs") }.getOrNull() != null) {
+            if (runCatching { Class.forName("io.lumine.xikage.mythicmobs.MythicMobs") }.getOrNull() != null) {
                 Mythic.API = Mythic4()
             }
         }

@@ -5,7 +5,7 @@ import io.lumine.mythic.core.items.MythicItem
 import org.bukkit.inventory.ItemStack
 import taboolib.library.configuration.ConfigurationSection
 
-class Item5(val source: MythicItem) : Item {
+internal class Item5(val source: MythicItem) : Item {
 
     override val internalName: String
         get() = source.internalName
@@ -17,19 +17,9 @@ class Item5(val source: MythicItem) : Item {
         get() = source.displayName
 
     override val config: ConfigurationSection
-        get() = Cache.itemConfiguration.getOrPut(internalName) { Mob5Configuration(source.config) }
-
-    private val bukkitItem by lazy {
-        source.generateItemStack(amount).toBukkit()
-    }
+        get() = MobConfiguration5(source.config)
 
     override fun generateItemStack(amount: Int): ItemStack {
-        if (amount < 0) {
-            return bukkitItem.clone()
-        }
-        return bukkitItem.clone().apply {
-            this.amount = amount
-        }
+        return source.generateItemStack(amount).toBukkit()
     }
-
 }
