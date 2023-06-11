@@ -8,4 +8,5 @@ package ink.ptms.um.skill
  * @since 2023/6/6 16:03
  */
 interface SkillMechanic {
+
 }

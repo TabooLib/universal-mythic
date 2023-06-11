@@ -1,5 +1,6 @@
-package ink.ptms.um.skill
+package ink.ptms.um.skill.type
 
+import ink.ptms.um.skill.SkillMeta
 import org.bukkit.entity.Entity
 
 /**
@@ -9,7 +10,7 @@ import org.bukkit.entity.Entity
  * @author 坏黑
  * @since 2023/6/6 16:06
  */
-interface EntityTargetSkill {
+interface EntityTargetSkill : BaseSkill {
 
     /** 施法 */
     fun cast(meta: SkillMeta, entity: Entity): Boolean

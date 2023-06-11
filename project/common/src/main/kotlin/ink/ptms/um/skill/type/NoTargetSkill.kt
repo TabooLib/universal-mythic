@@ -1,4 +1,6 @@
-package ink.ptms.um.skill
+package ink.ptms.um.skill.type
+
+import ink.ptms.um.skill.SkillMeta
 
 /**
  * universal-mythic
@@ -7,7 +9,7 @@ package ink.ptms.um.skill
  * @author 坏黑
  * @since 2023/6/6 16:05
  */
-interface NoTargetSkill {
+interface NoTargetSkill : BaseSkill {
 
     /** 施法 */
     fun cast(meta: SkillMeta): Boolean

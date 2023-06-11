@@ -16,8 +16,8 @@ interface PlaceholderDouble {
     fun get(): Double
 
     /** 通过实体获取 */
-    fun get(entity: Entity): Double
+    operator fun get(entity: Entity): Double
 
     /** 通过技能施法者获取 */
-    fun get(caster: SkillCaster): Double
+    operator fun get(caster: SkillCaster): Double
 }

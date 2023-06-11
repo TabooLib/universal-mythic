@@ -20,8 +20,9 @@ internal object MobListenerDrop {
     @SubscribeEvent
     fun onDropLoadEvent(event: MythicDropLoadEvent) {
         val e = MobDropLoadEvent(event.dropName).fire()
-        e.drops.forEach { dropFunc ->
+        e.itemDrops.forEach { dropFunc ->
             event.register(object : Drop(event.dropName, event.config), IItemDrop {
+
                 override fun getDrop(dropMeta: DropMetadata, amount: Double): AbstractItemStack {
                     dropMeta as DropMetadataImpl
                     val item = dropFunc.apply(object : DropMeta {

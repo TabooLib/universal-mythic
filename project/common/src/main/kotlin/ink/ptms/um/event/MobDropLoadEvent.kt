@@ -14,10 +14,10 @@ import java.util.function.Function
  */
 class MobDropLoadEvent(val dropName: String): BukkitProxyEvent() {
 
-    val drops = arrayListOf<Function<DropMeta, ItemStack>>()
+    val itemDrops = arrayListOf<Function<DropMeta, ItemStack>>()
 
-    fun register(func: Function<DropMeta, ItemStack>) {
-        drops += func
+    fun registerItem(func: Function<DropMeta, ItemStack>) {
+        itemDrops += func
     }
 
     fun fire(): MobDropLoadEvent {
