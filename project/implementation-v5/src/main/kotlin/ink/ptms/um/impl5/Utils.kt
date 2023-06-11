@@ -3,6 +3,7 @@ package ink.ptms.um.impl5
 import io.lumine.mythic.api.adapters.AbstractEntity
 import io.lumine.mythic.api.adapters.AbstractItemStack
 import io.lumine.mythic.api.adapters.AbstractLocation
+import io.lumine.mythic.api.skills.SkillCaster
 import io.lumine.mythic.bukkit.BukkitAdapter
 import org.bukkit.Location
 import org.bukkit.entity.Entity
@@ -22,4 +23,27 @@ internal fun Location.toMythic(): AbstractLocation {
 
 internal fun Entity.toMythic(): AbstractEntity {
     return BukkitAdapter.adapt(this)
+}
+
+internal fun SkillCaster.toUniversal(): ink.ptms.um.skill.SkillCaster {
+    return object : ink.ptms.um.skill.SkillCaster {
+
+        override val entity: Entity
+            get() = this@toUniversal.entity.bukkitEntity
+
+        override val location: Location
+            get() = this@toUniversal.location.toBukkit()
+
+        override val level: Double
+            get() = this@toUniversal.level
+
+        override val power: Float
+            get() = this@toUniversal.power
+
+        override var globalCooldown: Int
+            get() = this@toUniversal.globalCooldown
+            set(value) {
+                this@toUniversal.globalCooldown = value
+            }
+    }
 }

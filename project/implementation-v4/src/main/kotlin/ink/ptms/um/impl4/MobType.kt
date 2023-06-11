@@ -6,7 +6,7 @@ import io.lumine.xikage.mythicmobs.mobs.MythicMob
 import org.bukkit.Location
 import taboolib.library.configuration.ConfigurationSection
 
-internal class MobType4(val source: MythicMob) : MobType {
+internal class MobType(val source: MythicMob) : MobType {
 
     override val id: String
         get() = source.internalName
@@ -18,9 +18,9 @@ internal class MobType4(val source: MythicMob) : MobType {
         get() = source.entityType
 
     override val config: ConfigurationSection
-        get() = MobConfiguration4(source.config)
+        get() = MobConfiguration(source.config)
 
     override fun spawn(location: Location, level: Double): Mob {
-        return Mob4(source.spawn(location.toMythic(), level))
+        return Mob(source.spawn(location.toMythic(), level))
     }
 }

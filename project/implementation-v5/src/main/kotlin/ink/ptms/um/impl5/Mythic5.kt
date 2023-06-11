@@ -28,8 +28,8 @@ internal class Mythic5 : Mythic {
 
     override val isLegacy = false
 
-    override fun getItem(name: String): Item? {
-        return Item5(api.itemManager.getItem(name).orNull() ?: return null)
+    override fun getItem(name: String): ink.ptms.um.Item? {
+        return Item(api.itemManager.getItem(name).orNull() ?: return null)
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
@@ -44,20 +44,20 @@ internal class Mythic5 : Mythic {
         return api.itemManager.items.map { it.internalName }
     }
 
-    override fun getItemList(): List<Item> {
-        return api.itemManager.items.map { Item5(it) }
+    override fun getItemList(): List<ink.ptms.um.Item> {
+        return api.itemManager.items.map { Item(it) }
     }
 
-    override fun getMob(entity: Entity): Mob? {
-        return Mob5((MythicProvider.get().mobManager as MobExecutor).getMythicMobInstance(entity) ?: return null)
+    override fun getMob(entity: Entity): ink.ptms.um.Mob? {
+        return Mob((MythicProvider.get().mobManager as MobExecutor).getMythicMobInstance(entity) ?: return null)
     }
 
     override fun getMobIDList(): List<String> {
         return api.mobManager.mobNames.toList()
     }
 
-    override fun getMobType(name: String): MobType? {
-        return MobType5(api.mobManager.getMythicMob(name).orNull() ?: return null)
+    override fun getMobType(name: String): ink.ptms.um.MobType? {
+        return MobType(api.mobManager.getMythicMob(name).orNull() ?: return null)
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {

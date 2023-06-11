@@ -5,7 +5,7 @@ import io.lumine.mythic.core.items.MythicItem
 import org.bukkit.inventory.ItemStack
 import taboolib.library.configuration.ConfigurationSection
 
-internal class Item5(val source: MythicItem) : Item {
+internal class Item(val source: MythicItem) : Item {
 
     override val internalName: String
         get() = source.internalName
@@ -17,7 +17,7 @@ internal class Item5(val source: MythicItem) : Item {
         get() = source.displayName
 
     override val config: ConfigurationSection
-        get() = MobConfiguration5(source.config)
+        get() = MobConfiguration(source.config)
 
     override fun generateItemStack(amount: Int): ItemStack {
         return source.generateItemStack(amount).toBukkit()

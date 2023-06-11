@@ -9,18 +9,18 @@ import io.lumine.mythic.bukkit.events.MythicReloadedEvent
 import taboolib.common.platform.Ghost
 import taboolib.common.platform.event.SubscribeEvent
 
-internal object MobListener5 {
+internal object MobListener {
 
     @Ghost
     @SubscribeEvent
     fun onMobDeathEvent(event: MythicMobDeathEvent) {
-        event.drops = MobDeathEvent(Mob5(event.mob), event.killer, event.drops).fire().drop
+        event.drops = MobDeathEvent(Mob(event.mob), event.killer, event.drops).fire().drop
     }
 
     @Ghost
     @SubscribeEvent
     fun onMobSpawnEvent(event: MythicMobSpawnEvent) {
-        event.mobLevel = MobSpawnEvent(Mob5(event.mob), MobType5(event.mob.type), event.mobLevel).fire().level
+        event.mobLevel = MobSpawnEvent(Mob(event.mob), MobType(event.mob.type), event.mobLevel).fire().level
     }
 
     @Ghost

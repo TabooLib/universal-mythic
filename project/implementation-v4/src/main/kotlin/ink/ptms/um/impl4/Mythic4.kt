@@ -34,8 +34,8 @@ internal class Mythic4 : Mythic {
 
     override val isLegacy = true
 
-    override fun getItem(name: String): Item? {
-        return Item4(itemManager.getItem(name)?.get() ?: return null)
+    override fun getItem(name: String): ink.ptms.um.Item? {
+        return Item(itemManager.getItem(name)?.get() ?: return null)
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
@@ -50,20 +50,20 @@ internal class Mythic4 : Mythic {
         return itemManager.items.map { it.internalName }
     }
 
-    override fun getItemList(): List<Item> {
-        return itemManager.items.map { Item4(it) }
+    override fun getItemList(): List<ink.ptms.um.Item> {
+        return itemManager.items.map { Item(it) }
     }
 
-    override fun getMob(entity: Entity): Mob? {
-        return Mob4(mobManager.getMythicMobInstance(entity) ?: return null)
+    override fun getMob(entity: Entity): ink.ptms.um.Mob? {
+        return Mob(mobManager.getMythicMobInstance(entity) ?: return null)
     }
 
     override fun getMobIDList(): List<String> {
         return mobManager.mobNames.toList()
     }
 
-    override fun getMobType(name: String): MobType? {
-        return MobType4(mobManager.getMythicMob(name) ?: return null)
+    override fun getMobType(name: String): ink.ptms.um.MobType? {
+        return MobType(mobManager.getMythicMob(name) ?: return null)
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {

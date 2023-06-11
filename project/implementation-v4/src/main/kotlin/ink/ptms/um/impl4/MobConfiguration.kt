@@ -1,9 +1,9 @@
-package ink.ptms.um.impl5
+package ink.ptms.um.impl4
 
 import com.electronwill.nightconfig.core.CommentedConfig
-import io.lumine.mythic.api.config.MythicConfig
-import io.lumine.mythic.bukkit.utils.config.file.FileConfiguration
-import io.lumine.mythic.core.config.MythicConfigImpl
+import io.lumine.xikage.mythicmobs.io.MythicConfig
+import io.lumine.xikage.mythicmobs.utils.config.file.FileConfiguration
+import taboolib.common.util.unsafeLazy
 import taboolib.library.configuration.ConfigurationSection
 import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.module.configuration.Type
@@ -15,9 +15,7 @@ import taboolib.module.configuration.Type
  * @author 坏黑
  * @since 2022/9/2 14:46
  */
-internal class MobConfiguration5(sourceConfig: MythicConfig) : ConfigurationSection {
-
-    val config = sourceConfig as MythicConfigImpl
+internal class MobConfiguration(val config: MythicConfig) : ConfigurationSection {
 
     override val name: String
         get() = config.key
@@ -35,7 +33,9 @@ internal class MobConfiguration5(sourceConfig: MythicConfig) : ConfigurationSect
         }
     }
 
-    val root: FileConfiguration = runCatching { config.fileConfiguration }.getOrElse { config.getProperty<FileConfiguration>("fc")!! }
+    val root: FileConfiguration by unsafeLazy {
+        runCatching { config.fileConfiguration }.getOrElse { config.getProperty<FileConfiguration>("fc")!! }
+    }
 
     override fun clear() {
         error("Unmodifiable")
@@ -86,7 +86,7 @@ internal class MobConfiguration5(sourceConfig: MythicConfig) : ConfigurationSect
     }
 
     override fun getConfigurationSection(path: String): ConfigurationSection? {
-        return root.getConfigurationSection("$name.$path")?.let { MobConfiguration5(MythicConfigImpl("$name.$path", root)) }
+        return root.getConfigurationSection("$name.$path")?.let { MobConfiguration(MythicConfig("$name.$path", root)) }
     }
 
     override fun getDouble(path: String): Double {

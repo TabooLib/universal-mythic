@@ -10,7 +10,7 @@ import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicReloadedEvent
 import taboolib.common.platform.Ghost
 import taboolib.common.platform.event.SubscribeEvent
 
-internal object MobListener4 {
+internal object MobListener {
 
     @Ghost
     @SubscribeEvent
@@ -21,7 +21,7 @@ internal object MobListener4 {
         }.getOrElse {
             MythicMobs.inst().mobManager.getMythicMobInstance(event.entity) ?: return
         }
-        event.drops = MobDeathEvent(Mob4(activeMob), event.killer, event.drops).fire().drop
+        event.drops = MobDeathEvent(Mob(activeMob), event.killer, event.drops).fire().drop
     }
 
     @Ghost
@@ -33,7 +33,7 @@ internal object MobListener4 {
         }.getOrElse {
             MythicMobs.inst().mobManager.getMythicMobInstance(event.entity) ?: return
         }
-        val mob4 = Mob4(activeMob)
+        val mob4 = Mob(activeMob)
         // 唤起事件
         val e = MobSpawnEvent(mob4, mob4.type, runCatching { event.mobLevel }.getOrElse { 0.0 }).fire()
         // 更新等级

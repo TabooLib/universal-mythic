@@ -14,7 +14,7 @@ import taboolib.library.configuration.ConfigurationSection
  * @author 坏黑
  * @since 2022/7/12 13:52
  */
-internal class Mob5(val source: ActiveMob) : Mob {
+internal class Mob(val source: ActiveMob) : Mob {
 
     override val id: String
         get() = source.type.internalName
@@ -23,7 +23,7 @@ internal class Mob5(val source: ActiveMob) : Mob {
         get() = source.displayName
 
     override val type: MobType
-        get() = MobType5(source.type)
+        get() = MobType(source.type)
 
     override val entity: Entity
         get() = source.entity.bukkitEntity
