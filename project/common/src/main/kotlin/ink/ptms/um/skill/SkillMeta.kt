@@ -29,13 +29,13 @@ interface SkillMeta {
     var power: Float
 
     /** 是否异步 */
-    val isAsync: Boolean
+    var isAsync: Boolean
 
     /** 目标实体 */
-    val entityTargets: Set<Entity>
+    var entityTargets: Set<Entity>
 
     /** 目标坐标 */
-    val locationTargets: Set<Location>
+    var locationTargets: Set<Location>
 
     /** 元数据 */
     val metadata: Map<String, Any>

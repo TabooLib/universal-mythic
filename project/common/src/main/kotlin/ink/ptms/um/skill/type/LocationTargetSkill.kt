@@ -1,6 +1,7 @@
 package ink.ptms.um.skill.type
 
 import ink.ptms.um.skill.SkillMeta
+import ink.ptms.um.skill.SkillResult
 import org.bukkit.Location
 
 /**
@@ -13,5 +14,5 @@ import org.bukkit.Location
 interface LocationTargetSkill : BaseSkill {
 
     /** 施法 */
-    fun cast(meta: SkillMeta, location: Location): Boolean
+    fun cast(meta: SkillMeta, location: Location): SkillResult
 }

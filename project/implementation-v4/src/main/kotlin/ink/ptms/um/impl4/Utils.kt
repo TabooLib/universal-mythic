@@ -1,12 +1,15 @@
 package ink.ptms.um.impl4
 
+import ink.ptms.um.Skill
 import ink.ptms.um.skill.SkillConfig
+import ink.ptms.um.skill.SkillMeta
 import io.lumine.xikage.mythicmobs.adapters.AbstractEntity
 import io.lumine.xikage.mythicmobs.adapters.AbstractItemStack
 import io.lumine.xikage.mythicmobs.adapters.AbstractLocation
 import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
 import io.lumine.xikage.mythicmobs.skills.SkillCaster
+import io.lumine.xikage.mythicmobs.skills.SkillMetadata
 import io.lumine.xikage.mythicmobs.skills.placeholders.parsers.PlaceholderDouble
 import io.lumine.xikage.mythicmobs.skills.placeholders.parsers.PlaceholderFloat
 import io.lumine.xikage.mythicmobs.skills.placeholders.parsers.PlaceholderInt
@@ -14,7 +17,9 @@ import io.lumine.xikage.mythicmobs.skills.placeholders.parsers.PlaceholderString
 import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.inventory.ItemStack
+import taboolib.library.reflex.Reflex.Companion.getProperty
 import java.awt.Color
+import java.util.HashMap
 
 internal fun AbstractItemStack.toBukkit(): ItemStack {
     return BukkitAdapter.adapt(this)
@@ -198,6 +203,80 @@ internal fun MythicLineConfig.toUniversal(): SkillConfig {
 
         override fun getColor(key: Array<String>, def: String): Color {
             return this@toUniversal.getColor(key, def)
+        }
+    }
+}
+
+internal fun SkillMetadata.toUniversal(): SkillMeta {
+    return object : SkillMeta {
+
+        val metadataMap = this@toUniversal.getProperty<HashMap<String, Any>>("metadata")!!
+
+        override var caster: ink.ptms.um.skill.SkillCaster
+            get() = this@toUniversal.caster.toUniversal()
+            set(value) {
+                this@toUniversal.caster = value.toMythic()
+            }
+
+        override var trigger: Entity
+            get() = this@toUniversal.trigger.bukkitEntity
+            set(value) {
+                this@toUniversal.trigger = value.toMythic()
+            }
+
+        override var origin: Location
+            get() = this@toUniversal.origin.toBukkit()
+            set(value) {
+                this@toUniversal.origin = value.toMythic()
+            }
+
+        override val cause: Skill.Trigger
+            get() = Skill4.Trigger(this@toUniversal.cause)
+
+        override var power: Float
+            get() = this@toUniversal.power
+            set(value) {
+                this@toUniversal.power = value
+            }
+
+        override var isAsync: Boolean
+            get() = this@toUniversal.isAsync
+            set(value) {
+                this@toUniversal.isAsync = value
+            }
+
+        override var entityTargets: Set<Entity>
+            get() = this@toUniversal.entityTargets.map { it.bukkitEntity }.toSet()
+            set(value) {
+                this@toUniversal.setEntityTargets(value.map { it.toMythic() }.toHashSet())
+            }
+
+        override var locationTargets: Set<Location>
+            get() = this@toUniversal.locationTargets.map { it.toBukkit() }.toSet()
+            set(value) {
+                this@toUniversal.setLocationTargets(value.map { it.toMythic() }.toHashSet())
+            }
+
+        override val metadata: Map<String, Any>
+            get() = metadataMap
+
+        override val parameters: Map<String, String>
+            get() = emptyMap() // 该版本不支持
+
+        override fun setMetadata(key: String, value: Any) {
+            metadataMap[key] = value
+        }
+
+        override fun setParameter(key: String, value: String) {
+            // 该版本不支持
+        }
+
+        override fun clone(): SkillMeta {
+            return this@toUniversal.clone().toUniversal()
+        }
+
+        override fun deepClone(): SkillMeta {
+            return this@toUniversal.deepClone().toUniversal()
         }
     }
 }

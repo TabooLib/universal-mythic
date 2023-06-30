@@ -1,6 +1,7 @@
 package ink.ptms.um.skill.type
 
 import ink.ptms.um.skill.SkillMeta
+import ink.ptms.um.skill.SkillResult
 import org.bukkit.entity.Entity
 
 /**
@@ -13,5 +14,5 @@ import org.bukkit.entity.Entity
 interface EntityTargetSkill : BaseSkill {
 
     /** 施法 */
-    fun cast(meta: SkillMeta, entity: Entity): Boolean
+    fun cast(meta: SkillMeta, entity: Entity): SkillResult
 }

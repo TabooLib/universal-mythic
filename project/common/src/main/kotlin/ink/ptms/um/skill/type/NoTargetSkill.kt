@@ -1,6 +1,7 @@
 package ink.ptms.um.skill.type
 
 import ink.ptms.um.skill.SkillMeta
+import ink.ptms.um.skill.SkillResult
 
 /**
  * universal-mythic
@@ -12,5 +13,5 @@ import ink.ptms.um.skill.SkillMeta
 interface NoTargetSkill : BaseSkill {
 
     /** 施法 */
-    fun cast(meta: SkillMeta): Boolean
+    fun cast(meta: SkillMeta): SkillResult
 }
