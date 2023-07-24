@@ -5,5 +5,9 @@
 使用方式:
 
 ```kotlin
-taboo("ink.ptms:um:1.0.0-beta-20")
+taboolib{
+    relocate("ink.ptms.um","xx.um")
+}
+
+taboo("ink.ptms:um:1.0.0-beta-30")
 ```
