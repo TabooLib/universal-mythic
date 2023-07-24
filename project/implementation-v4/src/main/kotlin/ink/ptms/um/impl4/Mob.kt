@@ -2,9 +2,12 @@ package ink.ptms.um.impl4
 
 import ink.ptms.um.Mob
 import ink.ptms.um.MobType
+import io.lumine.xikage.mythicmobs.MythicMobs
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob
+import io.lumine.xikage.mythicmobs.mobs.MythicMob
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
+import org.bukkit.entity.LivingEntity
 import taboolib.library.configuration.ConfigurationSection
 
 /**
@@ -42,4 +45,13 @@ internal class Mob(val source: ActiveMob) : Mob {
 
     override val config: ConfigurationSection
         get() = type.config
+
+
+    override fun addThreat(mob: Entity, target: LivingEntity, amount: Double) {
+        MythicMobs.inst().apiHelper.addThreat(mob, target, amount)
+    }
+
+    override fun reduceThreat(mob: Entity, target: LivingEntity, amount: Double) {
+        MythicMobs.inst().apiHelper.reduceThreat(mob, target, amount)
+    }
 }

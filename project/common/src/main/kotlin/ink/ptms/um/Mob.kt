@@ -2,6 +2,7 @@ package ink.ptms.um
 
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
+import org.bukkit.entity.LivingEntity
 import taboolib.library.configuration.ConfigurationSection
 
 /**
@@ -57,4 +58,14 @@ interface Mob {
      * 配置
      */
     val config: ConfigurationSection
+
+    /**
+     * 增加仇恨
+     */
+    fun addThreat(mob: Entity, target: LivingEntity, amount: Double)
+
+    /**
+     * 减少仇恨
+     */
+    fun reduceThreat(mob: Entity, target: LivingEntity, amount: Double)
 }
