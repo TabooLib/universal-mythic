@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.util.unsafeLazy
+import taboolib.module.nms.getName
 
 /**
  * universal-mythic ink.ptms.um.impl4.Mythic4
@@ -39,7 +40,10 @@ internal class Mythic4 : Mythic {
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
-        return getItemList().firstOrNull { item -> itemStack.isSimilar(item.generateItemStack(-1)) }?.internalName
+        /** 观看了低版本MythicItem 的写法 判断Display即可 判断ItemStack会触发大量创建ItemStack */
+        return getItemList().firstOrNull { item ->
+            itemStack.getName().equals(item.displayName, true)
+        }?.internalName
     }
 
     override fun getItemStack(name: String): ItemStack? {
