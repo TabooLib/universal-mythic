@@ -41,9 +41,7 @@ internal class Mythic4 : Mythic {
 
     override fun getItemId(itemStack: ItemStack): String? {
         /** 观看了低版本MythicItem 的写法 判断Display即可 判断ItemStack会触发大量创建ItemStack */
-        return getItemList().firstOrNull { item ->
-            itemStack.getName().equals(item.displayName, true)
-        }?.internalName
+        return getItemList().firstOrNull { item -> itemStack.getName().equals(item.displayName, true) }?.internalName
     }
 
     override fun getItemStack(name: String): ItemStack? {

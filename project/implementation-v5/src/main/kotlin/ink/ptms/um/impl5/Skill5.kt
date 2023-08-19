@@ -48,6 +48,21 @@ internal class Skill5(obj: Any) : Skill {
         )
     }
 
+    /** 获取技能是否正在冷却 */
+    override fun onCooldown(caster: Entity): Boolean {
+        return source.onCooldown(CasterImpl(BukkitAdapter.adapt(caster), emptyMap()))
+    }
+
+    /** 获取技能冷却 */
+    override fun getCooldown(caster: Entity): Float {
+        return source.getCooldown(CasterImpl(BukkitAdapter.adapt(caster), emptyMap()))
+    }
+
+    /** 设置技能冷却 */
+    override fun setCooldown(caster: Entity, time: Double) {
+        return source.setCooldown(CasterImpl(BukkitAdapter.adapt(caster), emptyMap()), time)
+    }
+
     class Trigger(obj: Any) : Skill.Trigger {
 
         val source = obj as SkillTrigger

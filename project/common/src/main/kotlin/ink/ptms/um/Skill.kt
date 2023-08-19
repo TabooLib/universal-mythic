@@ -1,5 +1,6 @@
 package ink.ptms.um
 
+import ink.ptms.um.skill.SkillCaster
 import org.bukkit.Location
 import org.bukkit.entity.Entity
 
@@ -36,6 +37,15 @@ interface Skill {
         parameters: Map<String, Any> = emptyMap(),
         targetFilter: (Entity) -> Boolean = { true },
     ): Boolean
+
+    /** 获取技能是否正在冷却 */
+    fun onCooldown(caster: Entity): Boolean
+
+    /** 获取技能冷却 */
+    fun getCooldown(caster: Entity): Float
+
+    /** 设置技能冷却 */
+    fun setCooldown(caster: Entity, time: Double)
 
     /** 技能触发器 */
     interface Trigger {
