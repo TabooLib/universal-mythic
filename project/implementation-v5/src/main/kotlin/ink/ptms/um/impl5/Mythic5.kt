@@ -7,8 +7,11 @@ import io.lumine.mythic.api.skills.SkillTrigger
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.core.config.MythicLineConfigImpl
 import io.lumine.mythic.core.mobs.MobExecutor
+import io.lumine.mythic.core.utils.MythicUtil
 import org.bukkit.Location
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
@@ -70,6 +73,10 @@ internal class Mythic5 : Mythic {
 
     override fun getSkillMechanic(skillLine: String): Skill? {
         return Skill5(api.skillManager.getMechanic(MythicLineConfigImpl.unparseBlock(skillLine)) ?: return null)
+    }
+
+    override fun getTargetedEntity(player: Player): LivingEntity {
+        return MythicUtil.getTargetedEntity(player)
     }
 
     override fun castSkill(

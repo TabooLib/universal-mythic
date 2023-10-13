@@ -2,6 +2,8 @@ package ink.ptms.um
 
 import org.bukkit.Location
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 interface Mythic {
@@ -45,6 +47,13 @@ interface Mythic {
      * @param skillLine 技能字符串（如：`message{m="text"}`）
      */
     fun getSkillMechanic(skillLine: String): Skill?
+
+    /**
+     * 获取玩家的目标
+     *
+     * @param player 玩家
+     */
+    fun getTargetedEntity(player: Player): LivingEntity
 
     /**
      * 释放技能

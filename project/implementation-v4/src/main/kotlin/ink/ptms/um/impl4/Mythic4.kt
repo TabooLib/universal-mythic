@@ -8,8 +8,11 @@ import io.lumine.xikage.mythicmobs.items.ItemManager
 import io.lumine.xikage.mythicmobs.mobs.MobManager
 import io.lumine.xikage.mythicmobs.skills.SkillManager
 import io.lumine.xikage.mythicmobs.skills.SkillTrigger
+import io.lumine.xikage.mythicmobs.util.MythicUtil
 import org.bukkit.Location
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
@@ -34,6 +37,10 @@ internal class Mythic4 : Mythic {
     val skillManager: SkillManager by unsafeLazy { api.skillManager }
 
     override val isLegacy = true
+
+    override fun getTargetedEntity(player: Player): LivingEntity {
+        return MythicUtil.getTargetedEntity(player)
+    }
 
     override fun getItem(name: String): ink.ptms.um.Item? {
         return Item(itemManager.getItem(name)?.get() ?: return null)
