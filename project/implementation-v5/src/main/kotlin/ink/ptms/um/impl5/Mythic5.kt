@@ -75,7 +75,7 @@ internal class Mythic5 : Mythic {
         return Skill5(api.skillManager.getMechanic(MythicLineConfigImpl.unparseBlock(skillLine)) ?: return null)
     }
 
-    override fun getTargetedEntity(player: Player): LivingEntity {
+    override fun getTargetedEntity(player: Player): LivingEntity? {
         return MythicUtil.getTargetedEntity(player)
     }
 
