@@ -38,7 +38,7 @@ internal class Mythic4 : Mythic {
 
     override val isLegacy = true
 
-    override fun getTargetedEntity(player: Player): LivingEntity {
+    override fun getTargetedEntity(player: Player): LivingEntity? {
         return MythicUtil.getTargetedEntity(player)
     }
 

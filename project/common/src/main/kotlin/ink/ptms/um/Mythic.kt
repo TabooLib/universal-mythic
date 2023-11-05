@@ -53,7 +53,7 @@ interface Mythic {
      *
      * @param player 玩家
      */
-    fun getTargetedEntity(player: Player): LivingEntity
+    fun getTargetedEntity(player: Player): LivingEntity?
 
     /**
      * 释放技能
