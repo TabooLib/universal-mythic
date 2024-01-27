@@ -1,19 +1,18 @@
+import io.izzel.taboolib.gradle.BUKKIT_ALL
+import io.izzel.taboolib.gradle.NMS_UTIL
+import io.izzel.taboolib.gradle.UNIVERSAL
+
 val taboolib_version: String by project
 
 plugins {
-    id("io.izzel.taboolib") version "1.55"
+    id("io.izzel.taboolib") version "2.0.0"
 }
 
 taboolib {
-    install("common")
-    install("module-configuration")
-    install("module-nms")
-    install("module-nms-util")
-    install("platform-bukkit")
-    options("skip-minimize", "keep-kotlin-module", "skip-kotlin-relocate", "skip-taboolib-relocate")
-    classifier = null
-    version = taboolib_version
-    exclude("taboolib")
+    subproject = true
+    env {
+        install(UNIVERSAL, BUKKIT_ALL, NMS_UTIL)
+    }
 }
 
 dependencies {

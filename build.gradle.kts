@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.gradle.java")
     id("org.gradle.maven-publish")
-    id("org.jetbrains.kotlin.jvm") version "1.5.31" apply false
+    id("org.jetbrains.kotlin.jvm") version "1.8.22" apply false
 }
 
 subprojects {
@@ -45,7 +45,7 @@ publishing {
             artifactId = "um"
             groupId = "ink.ptms"
             version = project.version.toString()
-            artifact(File("plugin/build/libs/plugin-${project.version}.jar"))
+            artifact(File("plugin/build/libs/${rootProject.name}-${project.version}.jar"))
         }
     }
 }

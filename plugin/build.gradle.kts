@@ -13,10 +13,7 @@ dependencies {
 tasks {
     withType<ShadowJar> {
         archiveClassifier.set("")
-        exclude("META-INF/**")
-        exclude("module-info.java")
-        exclude("plugin.yml")
-        relocate("ink.ptms.um.taboolib", "taboolib")
+        archiveBaseName.set(rootProject.name)
     }
     build {
         dependsOn(shadowJar)
