@@ -2,7 +2,7 @@ package ink.ptms.um.impl5
 
 import com.electronwill.nightconfig.core.CommentedConfig
 import io.lumine.mythic.api.config.MythicConfig
-import io.lumine.mythic.bukkit.utils.config.file.FileConfiguration
+import org.bukkit.configuration.file.FileConfiguration
 import io.lumine.mythic.core.config.MythicConfigImpl
 import taboolib.library.configuration.ConfigurationSection
 import taboolib.library.reflex.Reflex.Companion.getProperty

@@ -65,7 +65,7 @@ internal class Skill5(obj: Any) : Skill {
 
     class Trigger(obj: Any) : Skill.Trigger {
 
-        val source = obj as SkillTrigger
+        val source = obj as SkillTrigger<*>
 
         override val name: String = source.getProperty<String>("name")!!
     }

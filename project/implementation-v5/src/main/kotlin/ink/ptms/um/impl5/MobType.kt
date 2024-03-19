@@ -15,7 +15,7 @@ internal class MobType(val source: MythicMob) : MobType {
         get() = source.displayName.get()
 
     override val entityType: String
-        get() = source.entityType
+        get() = source.entityType.name
 
     override val config: ConfigurationSection
         get() = MobConfiguration(source.config)
