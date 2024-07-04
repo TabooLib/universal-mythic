@@ -2,19 +2,13 @@ package ink.ptms.um.impl4
 
 import ink.ptms.um.event.MobSkillLoadEvent
 import ink.ptms.um.skill.SkillResult
-import ink.ptms.um.skill.type.BaseSkill
-import ink.ptms.um.skill.type.EntityTargetSkill
-import ink.ptms.um.skill.type.LocationTargetSkill
-import ink.ptms.um.skill.type.NoTargetSkill
+import ink.ptms.um.skill.type.*
 import io.lumine.xikage.mythicmobs.adapters.AbstractEntity
 import io.lumine.xikage.mythicmobs.adapters.AbstractLocation
 import io.lumine.xikage.mythicmobs.api.bukkit.events.MythicMechanicLoadEvent
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
-import io.lumine.xikage.mythicmobs.skills.INoTargetSkill
-import io.lumine.xikage.mythicmobs.skills.ITargetedEntitySkill
-import io.lumine.xikage.mythicmobs.skills.ITargetedLocationSkill
-import io.lumine.xikage.mythicmobs.skills.SkillMechanic
-import io.lumine.xikage.mythicmobs.skills.SkillMetadata
+import io.lumine.xikage.mythicmobs.skills.*
+import io.lumine.xikage.mythicmobs.skills.conditions.IEntityCondition
 import taboolib.common.platform.Ghost
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.warning
@@ -33,7 +27,8 @@ internal object MobListenerSkill {
         event.register(ProxySkill(registerSkill, event.mechanicName, event.config))
     }
 
-    class ProxySkill(val skill: BaseSkill, name: String, mlc: MythicLineConfig) : SkillMechanic(name, mlc), ITargetedEntitySkill, ITargetedLocationSkill, INoTargetSkill {
+    class ProxySkill(val skill: BaseSkill, name: String, mlc: MythicLineConfig) : SkillMechanic(name, mlc),
+        ITargetedEntitySkill, ITargetedLocationSkill, INoTargetSkill, IEntityCondition {
 
         override fun castAtEntity(metadata: SkillMetadata, entity: AbstractEntity): Boolean {
             if (skill is EntityTargetSkill) {
@@ -56,6 +51,14 @@ internal object MobListenerSkill {
                 return skill.cast(metadata.toUniversal()) == SkillResult.SUCCESS
             }
             warning("$skill is not INoTargetSkill")
+            return false
+        }
+
+        override fun check(p0: AbstractEntity?): Boolean {
+            if (skill is EntityCondition) {
+                return skill.check(p0?.bukkitEntity)
+            }
+            warning("$skill is not IEntityCondition")
             return false
         }
     }
