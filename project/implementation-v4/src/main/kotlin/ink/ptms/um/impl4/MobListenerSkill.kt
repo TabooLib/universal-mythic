@@ -21,7 +21,7 @@ internal object MobListenerSkill {
         val e = MobSkillLoadEvent(event.mechanicName, event.config.toUniversal()).fire()
         val registerSkill = e.registerSkill ?: return
         // 如果注册的技能，不在这三种类型中，那么就是无效的技能类型
-        if (registerSkill !is EntityTargetSkill && registerSkill !is LocationTargetSkill && registerSkill !is NoTargetSkill) {
+        if (registerSkill !is EntityTargetSkill && registerSkill !is LocationTargetSkill && registerSkill !is NoTargetSkill && registerSkill !is EntityCondition) {
             error("Unsupported skill: $registerSkill")
         }
         event.register(ProxySkill(registerSkill, event.mechanicName, event.config))
