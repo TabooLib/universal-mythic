@@ -1,12 +1,14 @@
 package ink.ptms.um.impl5
 
 import ink.ptms.um.event.MobSkillLoadEvent
-import ink.ptms.um.skill.type.*
+import ink.ptms.um.skill.type.BaseSkill
+import ink.ptms.um.skill.type.EntityTargetSkill
+import ink.ptms.um.skill.type.LocationTargetSkill
+import ink.ptms.um.skill.type.NoTargetSkill
 import io.lumine.mythic.api.adapters.AbstractEntity
 import io.lumine.mythic.api.adapters.AbstractLocation
 import io.lumine.mythic.api.config.MythicLineConfig
 import io.lumine.mythic.api.skills.*
-import io.lumine.mythic.api.skills.conditions.IEntityCondition
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.bukkit.events.MythicMechanicLoadEvent
 import io.lumine.mythic.core.skills.SkillExecutor
@@ -23,15 +25,13 @@ internal object MobListenerSkill {
         val e = MobSkillLoadEvent(event.mechanicName, event.config.toUniversal()).fire()
         val registerSkill = e.registerSkill ?: return
         // 如果注册的技能，不在这三种类型中，那么就是无效的技能类型
-        if (registerSkill !is EntityTargetSkill && registerSkill !is LocationTargetSkill && registerSkill !is NoTargetSkill && registerSkill !is EntityCondition) {
+        if (registerSkill !is EntityTargetSkill && registerSkill !is LocationTargetSkill && registerSkill !is NoTargetSkill) {
             error("Unsupported skill: $registerSkill")
         }
         event.register(ProxySkill(registerSkill, MythicBukkit.inst().skillManager, event.mechanicName, event.config))
     }
 
-    class ProxySkill(val skill: BaseSkill, manager: SkillExecutor, name: String, mlc: MythicLineConfig) :
-        SkillMechanic(manager, name, mlc), ITargetedEntitySkill, ITargetedLocationSkill, INoTargetSkill,
-        IEntityCondition {
+    class ProxySkill(val skill: BaseSkill, manager: SkillExecutor, name: String, mlc: MythicLineConfig) : SkillMechanic(manager, name, mlc), ITargetedEntitySkill, ITargetedLocationSkill, INoTargetSkill {
 
         override fun castAtEntity(metadata: SkillMetadata, entity: AbstractEntity): SkillResult {
             if (skill is EntityTargetSkill) {
@@ -63,14 +63,6 @@ internal object MobListenerSkill {
             } catch (_: Throwable) {
                 SkillResult.ERROR
             }
-        }
-
-        override fun check(p0: AbstractEntity?): Boolean {
-            if (skill is EntityCondition) {
-                return skill.check(p0?.bukkitEntity)
-            }
-            warning("$skill is not IEntityCondition")
-            return false
         }
     }
 }
