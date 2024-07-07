@@ -4,7 +4,7 @@ import io.izzel.taboolib.gradle.UNIVERSAL
 val taboolib_version: String by project
 
 plugins {
-    id("io.izzel.taboolib") version "2.0.0"
+    id("io.izzel.taboolib") version "2.0.11"
 }
 
 taboolib {
