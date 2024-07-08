@@ -15,6 +15,7 @@ interface BaseCondition {
                 is LocationCondition -> true
                 is SkillMetadataCondition -> true
                 is EntityComparisonCondition -> true
+                is SkillMetaComparisonCondition->true
                 is EntityLocationDistanceCondition -> true
                 else -> false
             }

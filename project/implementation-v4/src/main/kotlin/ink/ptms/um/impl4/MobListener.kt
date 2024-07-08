@@ -38,6 +38,7 @@ internal object MobListener {
         val e = MobSpawnEvent(mob4, mob4.type, runCatching { event.mobLevel }.getOrElse { 0.0 }).fire()
         // 更新等级
         runCatching { event.mobLevel = e.level }
+        if (e.isCancelled) event.setCancelled()
     }
 
     @Ghost

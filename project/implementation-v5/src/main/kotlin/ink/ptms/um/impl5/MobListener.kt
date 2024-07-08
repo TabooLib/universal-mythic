@@ -20,7 +20,9 @@ internal object MobListener {
     @Ghost
     @SubscribeEvent
     fun onMobSpawnEvent(event: MythicMobSpawnEvent) {
-        event.mobLevel = MobSpawnEvent(Mob(event.mob), MobType(event.mob.type), event.mobLevel).fire().level
+        val e = MobSpawnEvent(Mob(event.mob), MobType(event.mob.type), event.mobLevel).fire()
+        event.mobLevel = e.level
+        event.isCancelled = e.isCancelled
     }
 
     @Ghost
