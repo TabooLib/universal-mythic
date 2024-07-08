@@ -8,5 +8,5 @@ import org.bukkit.Location
  *  author 劫
  */
 interface LocationCondition:BaseCondition {
-    fun check(location: Location):Boolean
+    fun check(location: Location?):Boolean
 }

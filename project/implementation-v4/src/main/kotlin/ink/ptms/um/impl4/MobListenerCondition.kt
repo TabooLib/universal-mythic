@@ -23,53 +23,58 @@ internal object MobListenerCondition {
     @Ghost
     @SubscribeEvent
     fun onSkillConditionEvent(event: MythicConditionLoadEvent) {
-        val e = MobConditionLoadEvent(event.config.key, event.config.toUniversal()).fire()
+        val config = event.config
+        val e = MobConditionLoadEvent(config.key, config.toUniversal()).fire()
         val registerCondition = e.skillCondition ?: return
         if (!BaseCondition.isSubclass(registerCondition)) {
             error("Unsupported skill: $registerCondition")
         }
-        event.register(ProxyCondition(registerCondition, event.config))
+        when (registerCondition) {
+            is EntityCondition -> event.register(Entity(registerCondition, config))
+            is CasterCondition -> event.register(Caster(registerCondition, config))
+            is LocationCondition -> event.register(Location(registerCondition, config))
+            is SkillMetadataCondition -> event.register(SkillMeta(registerCondition, config))
+            is EntityComparisonCondition -> event.register(EntityComparison(registerCondition, config))
+            is EntityLocationDistanceCondition -> event.register(EntityLocation(registerCondition, config))
+            is SkillMetaComparisonCondition -> throw NullPointerException("当前MM版本不支持这个条件")
+        }
     }
 
-    class ProxyCondition(private val skillCondition: BaseCondition, config: MythicLineConfig) : SkillCondition(config.line), ICasterCondition,
-        IEntityComparisonCondition, IEntityCondition, IEntityLocationComparisonCondition, ILocationCondition, ISkillMetaCondition {
-
+    class Caster(val condition: CasterCondition, config: MythicLineConfig) : SkillCondition(config.line), ICasterCondition {
         override fun check(p0: SkillCaster?): Boolean {
-            return if (skillCondition is CasterCondition) {
-                p0?.toUniversal()?.let { skillCondition.check(it) } ?: false
-            } else false
+            return condition.check(p0?.toUniversal())
         }
+    }
 
+    class EntityComparison(val condition: EntityComparisonCondition, config: MythicLineConfig) : SkillCondition(config.line),
+        IEntityComparisonCondition {
         override fun check(p0: AbstractEntity?, p1: AbstractEntity?): Boolean {
-            return if (skillCondition is EntityComparisonCondition) {
-                skillCondition.check(p0?.bukkitEntity, p1?.bukkitEntity)
-            } else false
+            return condition.check(p0?.bukkitEntity, p1?.bukkitEntity)
         }
+    }
 
-        override fun check(p0: AbstractEntity?): Boolean {
-            return if (skillCondition is EntityCondition) {
-                p0?.let { skillCondition.check(it.bukkitEntity) } ?: false
-            } else false
-        }
-
+    class EntityLocation(val condition: EntityLocationDistanceCondition, config: MythicLineConfig) : SkillCondition(config.line),
+        IEntityLocationComparisonCondition {
         override fun check(p0: AbstractEntity?, p1: AbstractLocation?): Boolean {
-            return if (skillCondition is EntityLocationDistanceCondition) {
-                p1?.let { skillCondition.check(p0?.bukkitEntity, it.toBukkit()) } ?: false
-            } else false
+            return condition.check(p0?.bukkitEntity, p1?.toBukkit())
         }
+    }
 
-        override fun check(p0: AbstractLocation?): Boolean {
-            return if (skillCondition is LocationCondition) {
-                p0?.toBukkit()?.let { skillCondition.check(it) } ?: false
-            } else false
+    class Entity(val condition: EntityCondition, config: MythicLineConfig) : SkillCondition(config.line), IEntityCondition {
+        override fun check(p0: AbstractEntity?): Boolean {
+            return condition.check(p0?.bukkitEntity)
         }
+    }
 
+    class SkillMeta(val condition: SkillMetadataCondition, config: MythicLineConfig) : SkillCondition(config.line), ISkillMetaCondition {
         override fun check(p0: SkillMetadata?): Boolean {
-            return if (skillCondition is SkillMetadataCondition) {
-                p0?.toUniversal()?.let { skillCondition.check(it) } ?: false
-            } else false
+            return condition.check(p0?.toUniversal())
         }
+    }
 
-
+    class Location(val condition: LocationCondition, config: MythicLineConfig) : SkillCondition(config.line), ILocationCondition {
+        override fun check(p0: AbstractLocation?): Boolean {
+            return  condition.check(p0?.toBukkit())
+        }
     }
 }

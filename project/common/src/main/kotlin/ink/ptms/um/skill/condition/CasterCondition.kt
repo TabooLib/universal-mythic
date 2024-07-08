@@ -8,5 +8,5 @@ import ink.ptms.um.skill.SkillCaster
  *  author 劫
  */
 interface CasterCondition:BaseCondition {
-    fun check(skillCaster: SkillCaster):Boolean
+    fun check(skillCaster: SkillCaster?):Boolean
 }

@@ -8,5 +8,5 @@ import org.bukkit.entity.Entity
  *  author 劫
  */
 interface EntityCondition:BaseCondition {
-    fun check(entity: Entity):Boolean
+    fun check(entity: Entity?):Boolean
 }

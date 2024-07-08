@@ -9,5 +9,5 @@ import org.bukkit.entity.Entity
  *  author 劫
  */
 interface EntityLocationDistanceCondition : BaseCondition {
-    fun check(entity: Entity?, location: Location): Boolean
+    fun check(entity: Entity?, location: Location?): Boolean
 }
