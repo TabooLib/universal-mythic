@@ -118,7 +118,7 @@ internal class Mythic5 : Mythic {
     override fun registerMob(file: File, node: String): Boolean {
         return if (!mmList.containsKey(node)) {
             mmList[node] = io.lumine.mythic.core.mobs.MobType(
-                MobExecutor(MythicBukkit.inst()),
+                MythicBukkit.inst().mobManager,
                 null,
                 file,
                 node,
