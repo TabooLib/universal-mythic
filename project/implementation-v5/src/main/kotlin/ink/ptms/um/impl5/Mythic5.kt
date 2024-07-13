@@ -1,14 +1,18 @@
 package ink.ptms.um.impl5
 
-import ink.ptms.um.*
+import ink.ptms.um.Mythic
 import ink.ptms.um.Skill
 import io.lumine.mythic.api.MythicProvider
+import io.lumine.mythic.api.mobs.MythicMob
 import io.lumine.mythic.api.skills.SkillTrigger
 import io.lumine.mythic.bukkit.MythicBukkit
+import io.lumine.mythic.core.config.MythicConfigImpl
 import io.lumine.mythic.core.config.MythicLineConfigImpl
+import io.lumine.mythic.core.items.MythicItem
 import io.lumine.mythic.core.mobs.MobExecutor
 import io.lumine.mythic.core.utils.MythicUtil
 import org.bukkit.Location
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
@@ -16,7 +20,9 @@ import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.util.orNull
+import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.module.nms.getItemTag
+import java.io.File
 
 /**
  * universal-mythic ink.ptms.um.impl4.Mythic4
@@ -28,6 +34,8 @@ internal class Mythic5 : Mythic {
 
     val api: MythicBukkit
         get() = MythicProvider.get() as MythicBukkit
+
+    val mmList: HashMap<String, MythicMob> = api.mobManager.getProperty<HashMap<String, MythicMob>>("mmList")!!
 
     override val isLegacy = false
 
@@ -89,6 +97,42 @@ internal class Mythic5 : Mythic {
         power: Float,
     ): Boolean {
         return api.apiHelper.castSkill(caster, skillName, trigger, origin, et, lt, power)
+    }
+
+    override fun registerItem(file: File, node: String): Boolean {
+        return api.itemManager.registerItem(
+            node,
+            MythicItem(null, file, node, MythicConfigImpl(node, file, YamlConfiguration.loadConfiguration(file)))
+        )
+    }
+
+    override fun unregisterItem(node: String): Boolean {
+        return api.itemManager.getProperty<HashMap<String, MythicItem>>("items")!!.let {
+            if (it.containsKey(node)) {
+                it.remove(node)
+                true
+            } else false
+        }
+    }
+
+    override fun registerMob(file: File, node: String): Boolean {
+        return if (!mmList.containsKey(node)) {
+            mmList[node] = io.lumine.mythic.core.mobs.MobType(
+                MobExecutor(MythicBukkit.inst()),
+                null,
+                file,
+                node,
+                MythicConfigImpl(node, file, YamlConfiguration.loadConfiguration(file))
+            )
+            true
+        } else false
+    }
+
+    override fun unregisterMob(node: String): Boolean {
+        return if (mmList.containsKey(node)) {
+            mmList.remove(node)
+            true
+        } else false
     }
 
     object Loader {

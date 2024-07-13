@@ -1,14 +1,18 @@
 package ink.ptms.um.impl4
 
-import ink.ptms.um.*
+import ink.ptms.um.Mythic
 import ink.ptms.um.Skill
 import io.lumine.xikage.mythicmobs.MythicMobs
+import io.lumine.xikage.mythicmobs.io.MythicConfig
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
 import io.lumine.xikage.mythicmobs.items.ItemManager
+import io.lumine.xikage.mythicmobs.items.MythicItem
 import io.lumine.xikage.mythicmobs.mobs.MobManager
+import io.lumine.xikage.mythicmobs.mobs.MythicMob
 import io.lumine.xikage.mythicmobs.skills.SkillManager
 import io.lumine.xikage.mythicmobs.skills.SkillTrigger
 import io.lumine.xikage.mythicmobs.util.MythicUtil
+import io.lumine.xikage.mythicmobs.utils.config.file.YamlConfiguration
 import org.bukkit.Location
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
@@ -17,7 +21,10 @@ import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.util.unsafeLazy
+import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.module.nms.getName
+import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * universal-mythic ink.ptms.um.impl4.Mythic4
@@ -35,6 +42,8 @@ internal class Mythic4 : Mythic {
     val itemManager: ItemManager by unsafeLazy { api.itemManager }
 
     val skillManager: SkillManager by unsafeLazy { api.skillManager }
+
+    internal val mmList: ConcurrentHashMap<String, MythicMob> = mobManager.getProperty<ConcurrentHashMap<String, MythicMob>>("mmList")!!
 
     override val isLegacy = true
 
@@ -97,6 +106,33 @@ internal class Mythic4 : Mythic {
         power: Float,
     ): Boolean {
         return api.apiHelper.castSkill(caster, skillName, trigger, origin, et, lt, power)
+    }
+
+    override fun registerItem(file: File, node: String): Boolean {
+        return itemManager.registerItem(node, MythicItem(file.name, node, MythicConfig(node, file, YamlConfiguration.loadConfiguration(file))))
+    }
+
+    override fun unregisterItem(node: String): Boolean {
+        return itemManager.getProperty<ConcurrentHashMap<String, MythicItem>>("items")!!.let {
+            if (it.contains(node)) {
+                it.remove(node)
+                true
+            } else false
+        }
+    }
+
+    override fun registerMob(file: File, node: String): Boolean {
+        return if (!mmList.contains(node)) {
+            mmList[node] = MythicMob(file.name, node, MythicConfig(node, file, YamlConfiguration.loadConfiguration(file)))
+            true
+        } else false
+    }
+
+    override fun unregisterMob(node: String): Boolean {
+        return if (mmList.contains(node)) {
+            mmList.remove(node)
+            true
+        } else false
     }
 
     object Loader {
