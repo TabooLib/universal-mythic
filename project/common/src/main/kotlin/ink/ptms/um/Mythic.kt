@@ -5,6 +5,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import java.io.File
 import java.util.*
 
 interface Mythic {
@@ -79,6 +80,44 @@ interface Mythic {
         lt: Collection<Location> = emptyList(),
         power: Float = 1f,
     ): Boolean
+
+    /**
+     * 注册物品
+     *
+     * @param file 文件
+     * @param node 节点名
+     *
+     * @return 如果物品存在则返回false
+     */
+    fun registerItem(file: File, node: String): Boolean
+
+    /**
+     * 移除已注册物品
+     *
+     * @param node 节点名
+     *
+     * @return 当不存在物品时,返回false
+     */
+    fun unregisterItem(node: String): Boolean
+
+    /**
+     * 注册怪物
+     *
+     * @param file 怪物文件
+     * @param node 怪物节点名
+     *
+     * @return 如果已存在则返回false
+     */
+    fun registerMob(file: File, node: String): Boolean
+
+    /**
+     * 移除已注册的怪物
+     *
+     * @param node 节点名
+     *
+     * @return 如果不存在则返回false
+     */
+    fun unregisterMob(node: String): Boolean
 
     companion object {
 
