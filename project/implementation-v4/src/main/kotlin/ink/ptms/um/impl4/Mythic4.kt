@@ -18,6 +18,8 @@ import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.util.unsafeLazy
 import taboolib.module.nms.getName
+import java.util.UUID
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * universal-mythic ink.ptms.um.impl4.Mythic4
@@ -67,6 +69,10 @@ internal class Mythic4 : Mythic {
         return Mob(mobManager.getMythicMobInstance(entity) ?: return null)
     }
 
+    override fun getMob(uuid: UUID): ink.ptms.um.Mob? {
+        return Mob(mobManager.getActiveMob(uuid).getOrNull() ?: return null)
+    }
+
     override fun getMobIDList(): List<String> {
         return mobManager.mobNames.toList()
     }
@@ -74,6 +80,7 @@ internal class Mythic4 : Mythic {
     override fun getMobType(name: String): ink.ptms.um.MobType? {
         return MobType(mobManager.getMythicMob(name) ?: return null)
     }
+
 
     override fun getSkillTrigger(name: String): Skill.Trigger {
         return Skill4.Trigger(SkillTrigger.valueOf(name.uppercase()))

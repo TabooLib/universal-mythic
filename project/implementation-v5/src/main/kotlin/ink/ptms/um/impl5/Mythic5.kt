@@ -17,6 +17,8 @@ import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.util.orNull
 import taboolib.module.nms.getItemTag
+import java.util.*
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * universal-mythic ink.ptms.um.impl4.Mythic4
@@ -53,6 +55,10 @@ internal class Mythic5 : Mythic {
 
     override fun getMob(entity: Entity): ink.ptms.um.Mob? {
         return Mob((MythicProvider.get().mobManager as MobExecutor).getMythicMobInstance(entity) ?: return null)
+    }
+
+    override fun getMob(uuid: UUID): ink.ptms.um.Mob? {
+        return Mob((MythicProvider.get().mobManager as MobExecutor).getActiveMob(uuid).getOrNull() ?: return null)
     }
 
     override fun getMobIDList(): List<String> {
