@@ -6,6 +6,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.io.File
+import java.util.*
 
 interface Mythic {
 
@@ -29,6 +30,9 @@ interface Mythic {
 
     /** 获取 ActiveMob 实例 */
     fun getMob(entity: Entity): Mob?
+
+    /** 根据实体 UUID 获取 ActiveMob 实例 */
+    fun getMob(uuid: UUID): Mob?
 
     /** 获取所有 Mob ID 列表 */
     fun getMobIDList(): List<String>

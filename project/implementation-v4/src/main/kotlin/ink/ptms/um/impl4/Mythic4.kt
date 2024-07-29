@@ -1,6 +1,6 @@
 package ink.ptms.um.impl4
 
-import ink.ptms.um.Mythic
+import ink.ptms.um.*
 import ink.ptms.um.Skill
 import io.lumine.xikage.mythicmobs.MythicMobs
 import io.lumine.xikage.mythicmobs.io.MythicConfig
@@ -24,7 +24,9 @@ import taboolib.common.util.unsafeLazy
 import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.module.nms.getName
 import java.io.File
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * universal-mythic ink.ptms.um.impl4.Mythic4
@@ -74,6 +76,10 @@ internal class Mythic4 : Mythic {
 
     override fun getMob(entity: Entity): ink.ptms.um.Mob? {
         return Mob(mobManager.getMythicMobInstance(entity) ?: return null)
+    }
+
+    override fun getMob(uuid: UUID): ink.ptms.um.Mob? {
+        return Mob(mobManager.getActiveMob(uuid).getOrNull() ?: return null)
     }
 
     override fun getMobIDList(): List<String> {
