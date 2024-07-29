@@ -6,6 +6,7 @@ import io.lumine.mythic.api.MythicProvider
 import io.lumine.mythic.api.skills.SkillTrigger
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.core.config.MythicLineConfigImpl
+import io.lumine.mythic.core.items.MythicItem
 import io.lumine.mythic.core.mobs.MobExecutor
 import io.lumine.mythic.core.utils.MythicUtil
 import org.bukkit.Location
@@ -17,8 +18,6 @@ import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.util.orNull
 import taboolib.module.nms.getItemTag
-import java.util.*
-import kotlin.jvm.optionals.getOrNull
 
 /**
  * universal-mythic ink.ptms.um.impl4.Mythic4
