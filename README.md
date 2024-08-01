@@ -9,5 +9,5 @@ taboolib{
     relocate("ink.ptms.um","xx.um")
 }
 
-taboo("ink.ptms:um:1.0.5")
+taboo("ink.ptms:um:1.0.8")
 ```
