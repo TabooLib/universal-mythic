@@ -1,6 +1,6 @@
 package ink.ptms.um.impl5
 
-import ink.ptms.um.*
+import ink.ptms.um.Mythic
 import ink.ptms.um.Skill
 import io.lumine.mythic.api.MythicProvider
 import io.lumine.mythic.api.mobs.MythicMob
@@ -37,7 +37,7 @@ internal class Mythic5 : Mythic {
     val api: MythicBukkit
         get() = MythicProvider.get() as MythicBukkit
 
-    val mmList: HashMap<String, MythicMob> = api.mobManager.getProperty<HashMap<String, MythicMob>>("mmList")!!
+    val mmList: MutableMap<String, MythicMob> = api.mobManager.getProperty<MutableMap<String, MythicMob>>("mmList")!!
 
     override val isLegacy = false
 
