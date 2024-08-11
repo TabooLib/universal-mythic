@@ -3,11 +3,14 @@ package ink.ptms.um.impl5
 import ink.ptms.um.Mythic
 import ink.ptms.um.Skill
 import io.lumine.mythic.api.MythicProvider
+import io.lumine.mythic.api.mobs.GenericCaster
 import io.lumine.mythic.api.mobs.MythicMob
 import io.lumine.mythic.api.skills.SkillTrigger
+import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.bukkit.MythicBukkit
 import io.lumine.mythic.core.config.MythicConfigImpl
 import io.lumine.mythic.core.config.MythicLineConfigImpl
+import io.lumine.mythic.core.drops.DropMetadataImpl
 import io.lumine.mythic.core.items.MythicItem
 import io.lumine.mythic.core.mobs.MobExecutor
 import io.lumine.mythic.core.utils.MythicUtil
@@ -27,7 +30,7 @@ import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * universal-mythic ink.ptms.um.impl4.Mythic4
+ * universal-mythic ink.ptms.um.impl5.Mythic5
  *
  * @author 坏黑
  * @since 2022/7/12 13:47
@@ -49,8 +52,11 @@ internal class Mythic5 : Mythic {
         return itemStack.getItemTag()["MYTHIC_TYPE"]?.asString()
     }
 
-    override fun getItemStack(name: String): ItemStack? {
-        return api.itemManager?.getItem(name)?.get()?.generateItemStack(1)?.toBukkit()
+    override fun getItemStack(name: String, player: Player?): ItemStack? {
+        val target = player?.let { BukkitAdapter.adapt(it) }
+        val meta = target?.let { DropMetadataImpl(GenericCaster(target), target) }
+        return meta?.let { api.itemManager?.getItem(name)?.get()?.generateItemStack(it, 1)?.toBukkit() }
+            ?: api.itemManager?.getItem(name)?.get()?.generateItemStack(1)?.toBukkit()
     }
 
     override fun getItemIDList(): List<String> {

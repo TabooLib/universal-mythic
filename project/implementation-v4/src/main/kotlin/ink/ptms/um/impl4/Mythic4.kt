@@ -1,12 +1,15 @@
 package ink.ptms.um.impl4
 
-import ink.ptms.um.*
+import ink.ptms.um.Mythic
 import ink.ptms.um.Skill
 import io.lumine.xikage.mythicmobs.MythicMobs
+import io.lumine.xikage.mythicmobs.adapters.bukkit.BukkitAdapter
+import io.lumine.xikage.mythicmobs.drops.DropMetadata
 import io.lumine.xikage.mythicmobs.io.MythicConfig
 import io.lumine.xikage.mythicmobs.io.MythicLineConfig
 import io.lumine.xikage.mythicmobs.items.ItemManager
 import io.lumine.xikage.mythicmobs.items.MythicItem
+import io.lumine.xikage.mythicmobs.mobs.GenericCaster
 import io.lumine.xikage.mythicmobs.mobs.MobManager
 import io.lumine.xikage.mythicmobs.mobs.MythicMob
 import io.lumine.xikage.mythicmobs.skills.SkillManager
@@ -62,8 +65,11 @@ internal class Mythic4 : Mythic {
         return getItemList().firstOrNull { item -> itemStack.getName().equals(item.displayName, true) }?.internalName
     }
 
-    override fun getItemStack(name: String): ItemStack? {
-        return itemManager.getItemStack(name)
+    override fun getItemStack(name: String, player: Player?): ItemStack? {
+        val target = player?.let { BukkitAdapter.adapt(it) }
+        val meta = target?.let { DropMetadata(GenericCaster(target), target) }
+        return meta?.let { itemManager.getItem(name)?.get()?.generateItemStack(it, 1)?.toBukkit() }
+            ?: itemManager.getItemStack(name)
     }
 
     override fun getItemIDList(): List<String> {
