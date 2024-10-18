@@ -1,16 +1,21 @@
-import io.izzel.taboolib.gradle.BUKKIT_ALL
-import io.izzel.taboolib.gradle.UNIVERSAL
+import io.izzel.taboolib.gradle.Basic
+import io.izzel.taboolib.gradle.Bukkit
+import io.izzel.taboolib.gradle.BukkitUtil
 
 val taboolib_version: String by project
 
 plugins {
-    id("io.izzel.taboolib") version "2.0.11"
+    id("io.izzel.taboolib") version "2.0.18"
 }
 
 taboolib {
     subproject = true
     env {
-        install(UNIVERSAL, BUKKIT_ALL)
+//        install(UNIVERSAL, BUKKIT_ALL)
+        install(Basic, Bukkit, BukkitUtil)
+    }
+    version {
+        taboolib = taboolib_version
     }
 }
 

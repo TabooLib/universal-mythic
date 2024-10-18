@@ -17,6 +17,9 @@ import taboolib.module.configuration.Type
  */
 internal class MobConfiguration(val config: MythicConfig) : ConfigurationSection {
 
+    override val primitiveConfig: Any
+        get() = config
+
     override val name: String
         get() = config.key
 

@@ -19,6 +19,9 @@ internal class MobConfiguration(sourceConfig: MythicConfig) : ConfigurationSecti
 
     val config = sourceConfig as MythicConfigImpl
 
+    override val primitiveConfig: Any
+        get() = config
+
     override val name: String
         get() = config.key
 
