@@ -4,7 +4,6 @@ import ink.ptms.um.Mob
 import ink.ptms.um.MobType
 import io.lumine.xikage.mythicmobs.MythicMobs
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob
-import io.lumine.xikage.mythicmobs.mobs.MythicMob
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.LivingEntity

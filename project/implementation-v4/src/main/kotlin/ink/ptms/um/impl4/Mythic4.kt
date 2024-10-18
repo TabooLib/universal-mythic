@@ -48,7 +48,9 @@ internal class Mythic4 : Mythic {
 
     val skillManager: SkillManager by unsafeLazy { api.skillManager }
 
-    internal val mmList: ConcurrentHashMap<String, MythicMob> = mobManager.getProperty<ConcurrentHashMap<String, MythicMob>>("mmList")!!
+    val mmList: ConcurrentHashMap<String, MythicMob> by unsafeLazy {
+        mobManager.getProperty<ConcurrentHashMap<String, MythicMob>>("mmList")!!
+    }
 
     override val isLegacy = true
 

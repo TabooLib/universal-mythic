@@ -24,6 +24,7 @@ import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.util.orNull
 import taboolib.library.reflex.Reflex.Companion.getProperty
+import taboolib.library.reflex.Reflex.Companion.invokeMethod
 import taboolib.module.nms.getItemTag
 import java.io.File
 import java.util.*
@@ -40,7 +41,9 @@ internal class Mythic5 : Mythic {
     val api: MythicBukkit
         get() = MythicProvider.get() as MythicBukkit
 
-    val mmList: MutableMap<String, MythicMob> = api.mobManager.getProperty<MutableMap<String, MythicMob>>("mmList")!!
+    val mmList: MutableMap<String, MythicMob> by lazy {
+        api.mobManager.getProperty<MutableMap<String, MythicMob>>("mmList")!!
+    }
 
     override val isLegacy = false
 
@@ -84,11 +87,13 @@ internal class Mythic5 : Mythic {
     }
 
     override fun getSkillTrigger(name: String): Skill.Trigger {
-        return Skill5.Trigger(SkillTrigger.get(name.uppercase()))
+        val invokeMethod = Class.forName(SkillTrigger::class.java.name).invokeMethod<Any>("get", name.uppercase(), isStatic = true) ?: return getDefaultSkillTrigger()
+        return Skill5.Trigger(invokeMethod)
     }
 
     override fun getDefaultSkillTrigger(): Skill.Trigger {
-        return Skill5.Trigger(SkillTrigger.get("DEFAULT"))
+        val invokeMethod = Class.forName(SkillTrigger::class.java.name).invokeMethod<Any>("get", "DEFAULT", isStatic = true)
+        return Skill5.Trigger(invokeMethod!!)
     }
 
     override fun getSkillMechanic(skillLine: String): Skill? {

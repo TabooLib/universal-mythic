@@ -89,7 +89,9 @@ internal class MobConfiguration(val config: MythicConfig) : ConfigurationSection
     }
 
     override fun getConfigurationSection(path: String): ConfigurationSection? {
-        return root.getConfigurationSection("$name.$path")?.let { MobConfiguration(MythicConfig("$name.$path", root)) }
+        return root.getConfigurationSection("$name.$path")?.let {
+            MobConfiguration(MythicConfig("$name.$path", root))
+        }
     }
 
     override fun getDouble(path: String): Double {
