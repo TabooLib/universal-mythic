@@ -10,13 +10,9 @@ interface BaseCondition {
         @JvmStatic
         fun isSubclass(subclass: BaseCondition): Boolean {
             return when (subclass) {
-                is CasterCondition -> true
-                is EntityCondition -> true
-                is LocationCondition -> true
-                is SkillMetadataCondition -> true
-                is EntityComparisonCondition -> true
-                is SkillMetaComparisonCondition->true
-                is EntityLocationDistanceCondition -> true
+                is CasterCondition, is EntityCondition, is LocationCondition,
+                is SkillMetadataCondition, is EntityComparisonCondition,
+                is SkillMetaComparisonCondition, is EntityLocationDistanceCondition -> true
                 else -> false
             }
         }
