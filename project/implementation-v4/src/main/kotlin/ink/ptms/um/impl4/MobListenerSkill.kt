@@ -15,19 +15,26 @@ import taboolib.common.platform.Ghost
 import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.warning
 
-
 internal object MobListenerSkill {
+
+    var isCrashed = false
 
     @Ghost
     @SubscribeEvent
     fun onDropLoadEvent(event: MythicMechanicLoadEvent) {
-        val e = MobSkillLoadEvent(event.mechanicName, event.config.toUniversal()).fire()
-        val registerSkill = e.registerSkill ?: return
-        // 如果注册的技能，不在这三种类型中，那么就是无效的技能类型
-        if (registerSkill !is EntityTargetSkill && registerSkill !is LocationTargetSkill && registerSkill !is NoTargetSkill) {
-            error("Unsupported skill: $registerSkill")
+        if (isCrashed) return
+        try {
+            val e = MobSkillLoadEvent(event.mechanicName, event.config.toUniversal()).fire()
+            val registerSkill = e.registerSkill ?: return
+            // 如果注册的技能，不在这三种类型中，那么就是无效的技能类型
+            if (registerSkill !is EntityTargetSkill && registerSkill !is LocationTargetSkill && registerSkill !is NoTargetSkill) {
+                error("Unsupported skill: $registerSkill")
+            }
+            event.register(ProxySkill(registerSkill, event.mechanicName, event.config))
+        } catch (ex: Throwable) {
+            isCrashed = true
+            ex.printStackTrace()
         }
-        event.register(ProxySkill(registerSkill, event.mechanicName, event.config))
     }
 
     class ProxySkill(val skill: BaseSkill, name: String, mlc: MythicLineConfig) : SkillMechanic(name, mlc), ITargetedEntitySkill, ITargetedLocationSkill, INoTargetSkill {
