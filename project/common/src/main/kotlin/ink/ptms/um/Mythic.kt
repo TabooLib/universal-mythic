@@ -23,7 +23,7 @@ interface Mythic {
     fun getItemStack(name: String): ItemStack?
 
     /** 获取 MythicItem 实例并构建到 ItemStack */
-    fun getItemStack(name: String, player: Player? = null): ItemStack?
+    fun getItemStack(name: String, player: Player?): ItemStack?
 
     /** 获取 MythicItem ID 列表 */
     fun getItemIDList(): List<String>
