@@ -62,6 +62,10 @@ internal class Mythic5 : Mythic {
             ?: api.itemManager?.getItem(name)?.get()?.generateItemStack(1)?.toBukkit()
     }
 
+    override fun getItemStack(name: String): ItemStack? {
+        return api.itemManager?.getItem(name)?.get()?.generateItemStack(1)?.toBukkit()
+    }
+
     override fun getItemIDList(): List<String> {
         return api.itemManager.items.map { it.internalName }
     }

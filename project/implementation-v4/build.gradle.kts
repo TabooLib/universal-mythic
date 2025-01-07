@@ -3,7 +3,7 @@ import io.izzel.taboolib.gradle.*
 val taboolib_version: String by project
 
 plugins {
-    id("io.izzel.taboolib") version "2.0.18"
+    id("io.izzel.taboolib") version "2.0.22"
 }
 
 taboolib {

@@ -74,6 +74,10 @@ internal class Mythic4 : Mythic {
             ?: itemManager.getItemStack(name)
     }
 
+    override fun getItemStack(name: String): ItemStack? {
+        return itemManager.getItemStack(name)
+    }
+
     override fun getItemIDList(): List<String> {
         return itemManager.items.map { it.internalName }
     }

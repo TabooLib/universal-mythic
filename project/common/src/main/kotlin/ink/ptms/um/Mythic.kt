@@ -19,6 +19,9 @@ interface Mythic {
     /** 获取 ItemStack 所对应的 MythicItem ID */
     fun getItemId(itemStack: ItemStack): String?
 
+    /** 获取 MythicItem 实例并构建到 ItemStack  不要用问号缺省，构建出来的代码不包含*/
+    fun getItemStack(name: String): ItemStack?
+
     /** 获取 MythicItem 实例并构建到 ItemStack */
     fun getItemStack(name: String, player: Player? = null): ItemStack?
 
