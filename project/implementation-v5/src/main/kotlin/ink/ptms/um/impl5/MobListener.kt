@@ -22,7 +22,11 @@ internal object MobListener {
     fun onMobSpawnEvent(event: MythicMobSpawnEvent) {
         val e = MobSpawnEvent(Mob(event.mob), MobType(event.mob.type), event.mobLevel).fire()
         event.mobLevel = e.level
-        event.isCancelled = e.isCancelled
+        kotlin.runCatching {
+            event.isCancelled = e.isCancelled
+        }.onFailure {
+            if (e.isCancelled) event.setCancelled()
+        }
     }
 
     @Ghost

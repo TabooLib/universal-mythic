@@ -25,7 +25,6 @@ import taboolib.common.platform.Awake
 import taboolib.common.util.orNull
 import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.library.reflex.Reflex.Companion.invokeMethod
-import taboolib.module.nms.getItemTag
 import java.io.File
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
@@ -52,7 +51,7 @@ internal class Mythic5 : Mythic {
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
-        return itemStack.getItemTag()["MYTHIC_TYPE"]?.asString()
+        return api.itemManager.getMythicTypeFromItem(itemStack)
     }
 
     override fun getItemStack(name: String, player: Player?): ItemStack? {
