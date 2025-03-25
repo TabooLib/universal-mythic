@@ -19,7 +19,6 @@ taboolib {
 
 dependencies {
     api(project(":project:common"))
-    compileOnly("ink.ptms.core:v11701:11701:mapped")
     compileOnly("com.electronwill.night-config:core-conversion:6.0.0")
     compileOnly("com.electronwill.night-config:core:3.6.6")
     // 你改你妈个蛋，我爱说实话
