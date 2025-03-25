@@ -5,6 +5,7 @@ import ink.ptms.um.Skill
 import io.lumine.mythic.api.MythicProvider
 import io.lumine.mythic.api.mobs.GenericCaster
 import io.lumine.mythic.api.mobs.MythicMob
+import io.lumine.mythic.api.mobs.entities.MythicEntity
 import io.lumine.mythic.api.skills.SkillTrigger
 import io.lumine.mythic.bukkit.BukkitAdapter
 import io.lumine.mythic.bukkit.MythicBukkit
@@ -15,13 +16,16 @@ import io.lumine.mythic.core.items.MythicItem
 import io.lumine.mythic.core.mobs.MobExecutor
 import io.lumine.mythic.core.utils.MythicUtil
 import org.bukkit.Location
+import org.bukkit.NamespacedKey
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
+import taboolib.common.platform.function.info
 import taboolib.common.util.orNull
 import taboolib.library.reflex.Reflex.Companion.getProperty
 import taboolib.library.reflex.Reflex.Companion.invokeMethod
@@ -52,7 +56,7 @@ internal class Mythic5 : Mythic {
     }
 
     override fun getItemId(itemStack: ItemStack): String? {
-        return itemStack.getItemTag()["MYTHIC_TYPE"]?.asString()
+        return MythicBukkit.inst().itemManager.getMythicTypeFromItem(itemStack)
     }
 
     override fun getItemStack(name: String, player: Player?): ItemStack? {
