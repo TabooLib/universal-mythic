@@ -20,8 +20,11 @@ internal class MobConfiguration(val config: MythicConfig) : ConfigurationSection
     override val primitiveConfig: Any
         get() = config
 
-    override val name: String
+    override var name: String
         get() = config.key
+        set(value) {
+            config.key = value
+        }
 
     override val parent: ConfigurationSection?
         get() = null
@@ -200,6 +203,10 @@ internal class MobConfiguration(val config: MythicConfig) : ConfigurationSection
 
     override fun isLong(path: String): Boolean {
         return root.isLong("$name.$path")
+    }
+
+    override fun isSet(path: String): Boolean {
+        return root.isSet("$name.$path")
     }
 
     override fun isString(path: String): Boolean {
