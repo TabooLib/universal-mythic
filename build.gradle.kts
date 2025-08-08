@@ -30,11 +30,11 @@ subprojects {
 publishing {
     repositories {
         maven {
-            url = uri("http://sacredcraft.cn:8081/repository/releases")
+            url = uri("https://nexus.maplex.top/repository/maven-releases/")
             isAllowInsecureProtocol = true
             credentials {
-                username = project.findProperty("taboolibUsername").toString()
-                password = project.findProperty("taboolibPassword").toString()
+                username = project.findProperty("NEXUS_MAPLEX_USERNAME")?.toString() ?: System.getenv("NEXUS_MAPLEX_USERNAME")
+                password = project.findProperty("NEXUS_MAPLEX_PASSWORD")?.toString() ?: System.getenv("NEXUS_MAPLEX_PASSWORD")
             }
             authentication {
                 create<BasicAuthentication>("basic")
